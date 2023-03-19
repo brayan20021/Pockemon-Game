@@ -21,10 +21,9 @@ JavaScript
 HTML5
 CSS
 Contribuciones
+
 Este es un proyecto de código abierto y se aceptan contribuciones. Siéntete libre de hacer un fork de este proyecto y enviar pull requests para agregar nuevas funcionalidades o corregir errores.
 
-Licencia
-Este proyecto está bajo la Licencia MIT. Puedes ver más detalles en el archivo LICENSE.md.
 
 Créditos
 El arte de los Pokémon es propiedad de Nintendo y Game Freak.
