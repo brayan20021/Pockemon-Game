@@ -1,4 +1,4 @@
-<!-- <audio id="mi-audio" src="audio/pockemonaudio.mp3" autoplay loop></audio> -->
+ <audio id="mi-audio" src="audio/pockemonaudio.mp3" autoplay loop></audio>
 
 
 <canvas id="canvas"></canvas>
@@ -19,19 +19,19 @@
 
   var canvas = document.getElementById("canvas");
   var context = canvas.getContext("2d");
-/*    var imagen = new Image();
+  var imagen = new Image();
   imagen.src = "img/pockemon.png";
   imagen.onload = function () {
 
     context.drawImage(imagen, 180, 10, 450, 180);
 
-  }  */
+  }  
 
   canvas.width = 800;
   canvas.height = 600;
 
-/*   var font = new FontFace('pokemon', 'url(fonts/PokemonHollow.ttf)');
-  font.load().then(function (loadedFont) {
+   var font = new FontFace('pokemon', 'url(fonts/PokemonHollow.ttf)');
+    font.load().then(function (loadedFont) {
     document.fonts.add(loadedFont);
 
     context.font = '30px pokemon';
@@ -42,96 +42,125 @@
 
     })
 
-  }); */
+  }); 
+
+  //Aqui se estara creando los objetos base con las que vamos interactuar mas adelante
+
+const housebase = ({name = 'casa', x = 0, y = 0, width = 130, height = 100, routeImage = null}) => ({
+
+name,
+x,
+y,
+width,
+height,
+routeImage,
+
+        draw () {
+
+            //context.fillRect(this.x, this.y, this.w, this.h);
+      
+            var myImage = new Image();
+            myImage.src = routeImage;   
+            myImage.onload = function () {
+
+                context.drawImage(myImage, x, y, width, height);
+
+            } 
+      
+            context.font = '30px pokemon';
+            context.fillText(this.name, this.x + 30 , this.y + 125);
+        }
+
+});
+
+const city = ({name = 'Principal', x = null, y = null, width = null, height = null, routeImage = null}) => ({
+
+name,
+x,
+y,
+width,
+height,
+routeImage,
+
+          draw () {
+
+                //context.fillRect(this.x, this.y, this.w, this.h);
+
+                var myImage = new Image();
+                myImage.src = routeImage;   
+                myImage.onload = function () {
+
+                    context.drawImage(myImage, width, height, 800, 600);
+
+                } 
+
+              }
+
+})
+
+
+canvas.addEventListener("mousemove", function(event) {
+  // Obtiene las coordenadas del click
+  var x = event.clientX - canvas.offsetLeft;
+  var y = event.clientY - canvas.offsetTop;
+  console.log("valor de x " + x)
+  console.log("valor de y " + y)
+  });
+
+  canvas.addEventListener("click", function(event) {
+  // Obtiene las coordenadas del click
+  var x = event.clientX - canvas.offsetLeft;
+  var y = event.clientY - canvas.offsetTop;
+  console.log("valor de x " + x)
+  console.log("valor de y " + y)
+
+  // Verifica si el click está dentro del área del texto de "Nuevo Juego"
+  if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
+
+      context.clearRect(0, 0, canvas.width, canvas.height)
+
+    springTown = city({
+    name: 'SpringTown',
+    width: 0,
+    height: 0,
+    routeImage : "img/puebloprimavera.png"
+
+    })
+
+    springTown.draw()
+
+    house1 = housebase({
+    name        :   'casa 1', 
+    x           :   canvas.height - 520, 
+    y           :   canvas.width - 520,
+    width       :   210,
+    height      :   180,  
+    routeImage  :   "img/casa1.png"
+    });
+
+    house1.draw()
+
+    house2 = housebase({
+    name        :   'casa 2', 
+    x           :   canvas.height - 210, 
+    y           :   canvas.width - 480,
+    width       :   250,
+    height      :   180, 
+    routeImage  : "img/casa2.png"
+
+    });
+
+    house2.draw() 
+
+  }
+
+  });
 
 
 
   // VAMOS A DEFINIR LOS DATOS DE LA CASA, EL TAMAñO ENTRE OTROS
 
-  const housebase = ({name = 'casa', x = 0, y = 0, width = 130, height = 100, routeImage = null}) => ({
-
-    name,
-    x,
-    y,
-    width,
-    height,
-    routeImage,
-
-            draw () {
-
-                //context.fillRect(this.x, this.y, this.w, this.h);
-           
-                var myImage = new Image();
-                myImage.src = routeImage;   
-                myImage.onload = function () {
-
-                    context.drawImage(myImage, x, y, width, height);
-
-                } 
-          
-                context.font = '30px pokemon';
-                context.fillText(this.name, this.x + 30 , this.y + 125);
-            }
-
-  });
-
-const city = ({name = 'Principal', x = null, y = null, width = null, height = null, routeImage = null}) => ({
-
-  name,
-  x,
-  y,
-  width,
-  height,
-  routeImage,
-
-              draw () {
-
-                    //context.fillRect(this.x, this.y, this.w, this.h);
-
-                    var myImage = new Image();
-                    myImage.src = routeImage;   
-                    myImage.onload = function () {
-
-                        context.drawImage(myImage, width, height, 800, 600);
-
-                    } 
-
-                  }
-
-})
-
-springTown = city({
-name: 'SpringTown',
-width: 0,
-height: 0,
-routeImage : "img/puebloprimavera.png"
-
-})
-
-springTown.draw()
-
-house1 = housebase({
-  name        :   'casa 1', 
-  x           :   canvas.height - 520, 
-  y           :   canvas.width - 520,
-  width       :   210,
-  height      :   180,  
-  routeImage  :   "img/casa1.png"
-});
-
-house1.draw()
-
-house2 = housebase({
-  name        :   'casa 2', 
-  x           :   canvas.height - 210, 
-  y           :   canvas.width - 480,
-  width       :   250,
-  height      :   180, 
-  routeImage  : "img/casa2.png"
-
-});
-
-house2.draw() 
+ 
 
 
 
