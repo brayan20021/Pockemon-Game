@@ -127,21 +127,21 @@ routeImage,
 
 
 //Para saber las coordenada del puntero
-canvas.addEventListener("mousemove", function(event) {
+/* canvas.addEventListener("mousemove", function(event) {
   // Obtiene las coordenadas del click
   var x = event.clientX - canvas.offsetLeft;
   var y = event.clientY - canvas.offsetTop;
   console.log("valor de x " + x)
   console.log("valor de y " + y)
-  });
+  }); */
 
 //Nos permite iniciar un nuevo juego una vez presionar el boton Nuevo juego
 canvas.addEventListener("click", function(event) {
   // Obtiene las coordenadas del click
   var x = event.clientX - canvas.offsetLeft;
   var y = event.clientY - canvas.offsetTop;
-  console.log("valor de x " + x)
-  console.log("valor de y " + y)
+ /*  console.log("valor de x " + x)
+  console.log("valor de y " + y) */
 
   // Verifica si el click está dentro del área del texto de "Nuevo Juego"
   if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
@@ -207,25 +207,50 @@ canvas.addEventListener("click", function(event) {
 
           case 'ArrowUp':
 
-          firstplayer.y -= 10; // Mover hacia arriba
-            break;
+              if(firstplayer.y > 200){
+
+              firstplayer.y -= 10; // Mover hacia arriba
+              console.log("El valor de y es: " + firstplayer.y)
+
+                }
+
+                break;
 
           case 'ArrowDown':
+          
+                  if(firstplayer.x > 0 && firstplayer.x > 240 && firstplayer.y < 470){
+                    
+                  firstplayer.y += 10; // Mover hacia abajo
+                  console.log("El valor de y es: " + firstplayer.y)
+                  
+                    }
 
-          firstplayer.y += 10; // Mover hacia abajo
-            break;
+                break;
 
           case 'ArrowLeft':
 
-          firstplayer.x -= 10; // Mover hacia la izquierda
+                  if(firstplayer.x > 0){
+
+                  firstplayer.x -= 10; // Mover hacia la izquierda
+                  console.log("El valor de x es: " + firstplayer.x)
+
+                    }
+
             break;
 
+            
           case 'ArrowRight':
 
-          firstplayer.x += 10; // Mover hacia la derecha
+                  if(firstplayer.x < 650){
+
+                  firstplayer.x += 10; // Mover hacia la derecha
+                  console.log("El valor de x es: " + firstplayer.x)
+                  
+                  }
             break;
 
           default:
+
             break;
 
       }
@@ -246,8 +271,6 @@ canvas.addEventListener("click", function(event) {
 
 
     })
-    
-
 
   }
 
