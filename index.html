@@ -1,4 +1,4 @@
- <audio id="mi-audio" src="audio/pockemonaudio.mp3" autoplay loop></audio>
+<!--  <audio id="mi-audio" src="audio/pockemonaudio.mp3" autoplay loop></audio> -->
 
 
 <canvas id="canvas"></canvas>
@@ -98,14 +98,14 @@ routeImage,
 
 })
 
-const player = ({name = 'player', x = 0, y = 0, width = 130, height = 100, routeImage = null}) => ({
+const player = ({name = 'player', x = 0, y = 0, width = 130, height = 100, routeImage = null, speed = 5}) => ({
 
 name,
 x,
 y,
 width,
 height,
-direction: 'down',
+speed: 5,
 routeImage,
             draw () {
 
@@ -115,7 +115,7 @@ routeImage,
             myImage.src = routeImage;   
             myImage.onload = function () {
 
-                context.drawImage(myImage, width, height, 50, 50);
+                context.drawImage(myImage, x, y, 50, 50);
                 context.font = 'bold 20px arial';
                 context.fillText(this.name, this.x , this.y);
 
@@ -185,32 +185,74 @@ canvas.addEventListener("click", function(event) {
 
     house2.draw() 
 
-    const firstplayer = player({
+    var firstplayer = player({
 
     name        :    "Carlos",
     x           :    650 ,
-    y           :    325 ,
-    width       :    650,
-    height      :    280,
+    y           :    280 ,
     routeImage  :    "img/player.png",
+    speed       :    5,
 
     });
 
-firstplayer.draw()
+ 
+
+
+    //aqui vamos a capturar el movimiento del personaje
+    
+    window.addEventListener("keydown", (event) => {
+
+
+        switch(event.key){
+
+          case 'ArrowUp':
+
+          firstplayer.y -= 10; // Mover hacia arriba
+            break;
+
+          case 'ArrowDown':
+
+          firstplayer.y += 10; // Mover hacia abajo
+            break;
+
+          case 'ArrowLeft':
+
+          firstplayer.x -= 10; // Mover hacia la izquierda
+            break;
+
+          case 'ArrowRight':
+
+          firstplayer.x += 10; // Mover hacia la derecha
+            break;
+
+          default:
+            break;
+
+      }
+ 
+      var firstplayer1 = player({
+
+        name        :    "Carlos",
+        x           :    firstplayer.x,
+        y           :    firstplayer.y ,
+        routeImage  :    "img/player.png",
+        speed       :    5,
+
+        });
+
+        springTown.draw()
+        firstplayer1.draw()
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+    })
+    
+
 
   }
 
   });
 
  
-
-
-
-
-
-
-
-
-
 </script>
 <link rel="stylesheet" href="style.css">
