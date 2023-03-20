@@ -44,7 +44,7 @@
 
   }); 
 
-  //Aqui se estara creando los objetos base con las que vamos interactuar mas adelante
+//Aqui se estara creando los objetos base con las que vamos interactuar mas adelante
 
 const housebase = ({name = 'casa', x = 0, y = 0, width = 130, height = 100, routeImage = null}) => ({
 
@@ -98,7 +98,35 @@ routeImage,
 
 })
 
+const player = ({name = 'player', x = 0, y = 0, width = 130, height = 100, routeImage = null}) => ({
 
+name,
+x,
+y,
+width,
+height,
+direction: 'down',
+routeImage,
+            draw () {
+
+            //context.fillRect(this.x, this.y, this.w, this.h);
+
+            var myImage = new Image();
+            myImage.src = routeImage;   
+            myImage.onload = function () {
+
+                context.drawImage(myImage, width, height, 50, 50);
+                context.font = 'bold 20px arial';
+                context.fillText(this.name, this.x , this.y);
+
+            } 
+
+          }
+
+})
+
+
+//Para saber las coordenada del puntero
 canvas.addEventListener("mousemove", function(event) {
   // Obtiene las coordenadas del click
   var x = event.clientX - canvas.offsetLeft;
@@ -107,7 +135,8 @@ canvas.addEventListener("mousemove", function(event) {
   console.log("valor de y " + y)
   });
 
-  canvas.addEventListener("click", function(event) {
+//Nos permite iniciar un nuevo juego una vez presionar el boton Nuevo juego
+canvas.addEventListener("click", function(event) {
   // Obtiene las coordenadas del click
   var x = event.clientX - canvas.offsetLeft;
   var y = event.clientY - canvas.offsetTop;
@@ -129,6 +158,10 @@ canvas.addEventListener("mousemove", function(event) {
 
     springTown.draw()
 
+    
+  // VAMOS A DEFINIR LOS DATOS DE LA CASA, EL TAMAñO ENTRE OTROS
+
+
     house1 = housebase({
     name        :   'casa 1', 
     x           :   canvas.height - 520, 
@@ -146,21 +179,33 @@ canvas.addEventListener("mousemove", function(event) {
     y           :   canvas.width - 480,
     width       :   250,
     height      :   180, 
-    routeImage  : "img/casa2.png"
+    routeImage  :   "img/casa2.png"
 
     });
 
     house2.draw() 
 
+    const firstplayer = player({
+
+    name        :    "Carlos",
+    x           :    650 ,
+    y           :    325 ,
+    width       :    650,
+    height      :    280,
+    routeImage  :    "img/player.png",
+
+    });
+
+firstplayer.draw()
+
   }
 
   });
 
-
-
-  // VAMOS A DEFINIR LOS DATOS DE LA CASA, EL TAMAñO ENTRE OTROS
-
  
+
+
+
 
 
 

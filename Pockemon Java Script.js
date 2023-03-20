@@ -700,10 +700,10 @@
 		if (opc1==1) {
 			console.log(" @----------------------------------------------@");
 			console.log(" |                                              |");
-			console.log(" |  � TU NOMBRE                                 |");
+			console.log(" |  � TU NOMBRE                                |");
 			console.log(" |                _____________________         |");
 			console.log(" |                                              |");
-			console.log(" |                                         \\/   |");
+			console.log(" |                                         \\/  |");
 			console.log(" @----------------------------------------------@");
 			console.log("Escribe tu nombre: ");
 			nombre[2] = prompt();
