@@ -1,10 +1,9 @@
-<!--  <audio id="mi-audio" src="audio/pockemonaudio.mp3" autoplay loop></audio> -->
+<audio id="intro" src="audio/pockemonaudio.mp3"></audio>
+<audio id="walking" src="audio/walking.mp3"></audio>
+<audio id="natural" src="audio/natural.mp3"></audio>
 
-
-<canvas id="canvas"></canvas>
-
-
-
+<canvas id="layer_bottom"></canvas>
+<canvas id="layer_top"></canvas>
 
 <script>
 
@@ -12,67 +11,65 @@
   //miAudio.play();
 
 
-  //Script para el audio de inicio
+//Audios del juego
 
+//var intro = document.getElementById("intro")
+//intro.play()
 
-    //INICIO DEL CANVAS
+var walking = document.getElementById('walking')
+var natural = document.getElementById('natural')
 
-  var canvas = document.getElementById("canvas");
-  var context = canvas.getContext("2d");
+//INTERACCION CON EL PERSONAJE
+var globalvar = 1;
+var startofplaceX;
+var startofplaceY;
+
+  //INICIALIZACION DE CAPAS
+  var layer_bottom = document.getElementById("layer_bottom");
+  var lb_map = layer_bottom.getContext("2d");
+
+  var layer_top = document.getElementById("layer_top");
+  var lt_map = layer_top.getContext("2d");
+
+  layer_bottom.setAttribute("style", "z-index: 2; position:absolute;");
+  layer_bottom.width = 800;
+  layer_bottom.height = 600;
+
+  layer_top.setAttribute("style", "z-index: 10000; position:relative;");
+  layer_top.width = 800;
+  layer_top.height = 600;
+
+  //INICIALIZACION DE LAYER BOTTOM 
   var imagen = new Image();
   imagen.src = "img/pockemon.png";
 
   imagen.onload = function () {
-
-    context.drawImage(imagen, 180, 10, 450, 180);
-
+    lb_map.drawImage(imagen, 180, 10, 450, 180);
   }  
 
-  canvas.width = 800;
-  canvas.height = 600;
-
-   var font = new FontFace('pokemon', 'url(fonts/PokemonHollow.ttf)');
+  //INICIALIZACION DE LAYER TOP 
+  var font = new FontFace('pokemon', 'url(fonts/PokemonHollow.ttf)');
     font.load().then(function (loadedFont) {
     document.fonts.add(loadedFont);
+    
+    startofplaceX = 650;
+    startofplaceY = 280;
 
-    context.font = '30px pokemon';
-    context.fillText('1.- J U E G O    N U E V O', 180, 500);
-    context.fillText('2 -  S A L I R', 180, 550);
-
-    canvas.addEventListener("click", function (event) {
-
-    })
-
+    lb_map.font = '30px pokemon';
+    lb_map.fillText('1.- J U E G O    N U E V O', 180, 500);
+    lb_map.fillText('2 -  S A L I R', 180, 550);
   }); 
 
-//Aqui se estara creando los objetos base con las que vamos interactuar mas adelante
-
-const housebase = ({name = 'casa', x = 0, y = 0, width = 130, height = 100, routeImage = null}) => ({
-
-name,
-x,
-y,
-width,
-height,
-routeImage,
-
-        draw () {
-
-            //context.fillRect(this.x, this.y, this.w, this.h);
-      
-            var myImage = new Image();
-            myImage.src = routeImage;   
-            myImage.onload = function () {
-
-                context.drawImage(myImage, x, y, width, height);
-
-            } 
-      
-            context.font = '30px pokemon';
-            context.fillText(this.name, this.x + 30 , this.y + 125);
-        }
-
-});
+  //DIFINCION DE ELEMENTOS DINAMICOS
+  var myImage = new Image();
+  myImage.src = "img/player.png";   
+  myImage.onload = function () {
+                //this.x = startofplaceX;
+                //this.y = startofplaceY;
+                lt_map.drawImage(myImage, startofplaceX, startofplaceY, 50, 50);                
+                lt_map.font = 'bold 20px arial';
+                lt_map.fillText(this.name, this.x , this.y);
+            }
 
 const city = ({name = 'Principal', x = null, y = null, width = null, height = null, routeImage = null}) => ({
 
@@ -85,13 +82,11 @@ routeImage,
 
           draw () {
 
-                //context.fillRect(this.x, this.y, this.w, this.h);
-
-                var myImage = new Image();
+                 var myImage = new Image();
                 myImage.src = routeImage;   
                 myImage.onload = function () {
 
-                    context.drawImage(myImage, width, height, 800, 600);
+                    lb_map.drawImage(myImage, width, height, 800, 600);
 
                 } 
 
@@ -110,227 +105,173 @@ location,
 speed: 5,
 routeImage,
             draw () {
-
-            //context.fillRect(this.x, this.y, this.w, this.h);
-
-            var myImage = new Image();
-            myImage.src = routeImage;   
-            myImage.onload = function () {
-
-                context.drawImage(myImage, x, y, 50, 50);
-                context.font = 'bold 20px arial';
-                context.fillText(this.name, this.x , this.y);
-
-            } 
-
+ //var myImage = new Image();
+ // myImage.src = routeImage;  
+           // myImage.onload = function () {
+                //this.x = startofplaceX;
+                //this.y = startofplaceY;
+                lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
+                lt_map.drawImage(myImage, x, y, 50, 50);                
+                lt_map.font = 'bold 20px arial';
+                lt_map.fillText(this.name, this.x , this.y);
+                console.log("COORDENADA X (" + firstplayer.x + ") Y (" + firstplayer.y + ")");
+           // } 
           }
-
 })
 
-var globalvar = 1;
-var startofplaceX = 650;
-var startofplaceY = 280;
-
-
-//Para saber las coordenada del puntero
-/* canvas.addEventListener("mousemove", function(event) {
-  // Obtiene las coordenadas del click
-  var x = event.clientX - canvas.offsetLeft;
-  var y = event.clientY - canvas.offsetTop;
-  console.log("valor de x " + x)
-  console.log("valor de y " + y)
-  }); */
-
-//Nos permite iniciar un nuevo juego una vez presionar el boton Nuevo juego
-canvas.addEventListener("click", function(event) {
-  // Obtiene las coordenadas del click
-  var x = event.clientX - canvas.offsetLeft;
-  var y = event.clientY - canvas.offsetTop;
- /*  console.log("valor de x " + x)
-  console.log("valor de y " + y) */
-
-  // Verifica si el click está dentro del área del texto de "Nuevo Juego"
-  if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
-
-
-     context.clearRect(0, 0, canvas.width, canvas.height)
-
-     //Aqui estaremos desplegando las ciudades
-        springTown = city({
+const springTown = city({
         name: 'SpringTown',
         width: 0,
         height: 0,
         routeImage : "img/puebloprimavera.png"
 
-        })
+        });
 
-          springTown.draw()
-
-        pallettown = city({
-        name: 'SpringTown',
+const pallettown = city({
+        name: 'pallettown',
         width: 0,
         height: 0,
         routeImage : "img/pallettown.png"
 
-        })
+        });
 
+
+  var firstplayer;
+function mover(x, y, w) {
+   firstplayer = player({
+
+name        :    "Carlos",
+x           :     x,
+y           :     y,
+routeImage  :    "img/player.png",
+speed       :    5,
+location    :    w
+});
+firstplayer.draw();
+
+}
+
+//INTERACCION CON MENU
+layer_top.addEventListener("click", function(event) {
+  var x = event.clientX - layer_top.offsetLeft;
+  var y = event.clientY - layer_top.offsetTop;
+
+  if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
+    lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
+
+    springTown.draw();
+
+    mover(650, 280, 1);
+  }
+});
+
+
+
+window.addEventListener("keydown", (event) => {
+    //CAPTURA DE COORDENADAS
+    switch(event.key){
+      case 'ArrowUp':
+
+          if(startofplaceY > 0){
+
+            startofplaceY -= 10; // Mover hacia arriba
+            walking.play()
+
+            }
+
+            break;
+
+      case 'ArrowDown':
     
-  // VAMOS A DEFINIR LOS DATOS DE LA CASA, EL TAMAñO ENTRE OTROS
+              if(startofplaceY < 550){
+                
+                startofplaceY += 10; // Mover hacia abajo
+                walking.play()
+              
+                } 
+            break;
 
+      case 'ArrowLeft':
 
-    house1 = housebase({
-    name        :   'casa 1', 
-    x           :   canvas.height - 520, 
-    y           :   canvas.width - 520,
-    width       :   210,
-    height      :   180,  
-    routeImage  :   "img/casa1.png"
-    });
+              if(startofplaceX > 0){
 
-    house1.draw()
-
-    house2 = housebase({
-    name        :   'casa 2', 
-    x           :   canvas.height - 210, 
-    y           :   canvas.width - 480,
-    width       :   250,
-    height      :   180, 
-    routeImage  :   "img/casa2.png"
-
-    });
-
-    house2.draw() 
-
-    var firstplayer = player({
-
-    name        :    "Carlos",
-    x,
-    y,
-    routeImage  :    "img/player.png",
-    speed       :    5,
-
-    });
-
- 
-
-
-    //aqui vamos a capturar el movimiento del personaje
-    
-    window.addEventListener("keydown", (event) => {
-
-
-        switch(event.key){
-
-          case 'ArrowUp':
-
-              if(startofplaceY > 0){
-
-                startofplaceY -= 10; // Mover hacia arriba
-              console.log("El valor de y es: " + firstplayer.y)
+                startofplaceX -= 10; // Mover hacia la izquierda
+                walking.play()
 
                 }
 
-                break;
+        break;
 
-          case 'ArrowDown':
-          
-                  if(startofplaceY < 550){
-                    
-                    startofplaceY += 10; // Mover hacia abajo
-                  console.log("El valor de y es: " + firstplayer.y)
-                  
-                    } else if (firstplayer.x < 330){
-
-                    }
-
-                break;
-
-          case 'ArrowLeft':
-
-                  if(startofplaceX > 0){
-
-                    startofplaceX -= 10; // Mover hacia la izquierda
-                  console.log("El valor de x es: " + firstplayer.x)
-
-                    }
-
-            break;
-
-            
-          case 'ArrowRight':
-
-                  if(startofplaceX < 760){
-
-                    startofplaceX += 10; // Mover hacia la derecha
-                  console.log("El valor de x es: " + firstplayer.x)
-                  
-                  }
-            break;
-
-          default:
-
-            break;
-
-      }
- 
-      var firstplayer1 = player({
-
-        name        :    "Carlos",
-        x           :    startofplaceX,
-        y           :   startofplaceY,
-        routeImage  :    "img/player.png",
-        speed       :    5,
-        location    :    globalvar,
-
-        });
-
-        console.log(firstplayer1)
-
-       
         
-        if (firstplayer1.location === 1){
+      case 'ArrowRight':
 
-          
-            springTown.draw()
-            firstplayer1.draw()
-            context.clearRect(0, 0, canvas.width, canvas.height);
+              if(startofplaceX < 760){
 
-            if(startofplaceX === 0){
+                startofplaceX += 10; // Mover hacia la derecha
+                walking.play()
+              
+              }
+        break;
 
-              changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
+      default:
 
-                  if(changeworld){
-                    
-                    globalvar = 2;
-                    startofplaceX = 760;
-                    startofplaceY = 160;
-                    context.clearRect(0, 0, canvas.width, canvas.height)
-                    pallettown.draw()
-                    firstplayer1.draw()
-                  }
-            }
-
-          } else if (firstplayer1.location === 2) {
-
-            pallettown.draw()
-            firstplayer1.draw()
-            context.clearRect(0, 0, canvas.width, canvas.height);
-
-
-
-        }
-        
-        
-
-
-     })
-
-      
+        break;
 
   }
+     
+
+    mover(startofplaceX, startofplaceY, globalvar);
+    //lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+
+    if (globalvar === 1){
+        if(startofplaceX === 0){
+
+          changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
+
+              if(changeworld){
+                
+                lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+                globalvar = 2;
+                startofplaceX = 750;
+                startofplaceY = 170;
+                lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+                lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+                pallettown.draw();
+                natural.play()
+                mover(startofplaceX, startofplaceY, globalvar);
+                //lb_map.reset();
+               // lt_map.reset();
+              }
+        }
+
+
+      }
+
+      if (globalvar === 2) {
+        
+        if(startofplaceX === 760){
+
+            changeworld = confirm("¿Deseas regresar a Pueblo Primavera?")
+
+                if(changeworld){
+                  globalvar = 1;
+                  startofplaceX = 120;
+                  startofplaceY = 270;
+                  lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+                  lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+                  springTown.draw();
+                  natural.pause()
+                  mover(startofplaceX, startofplaceY, globalvar);
+                  //lb_map.reset();
+                // lt_map.reset();
+                }
+            }
+      }
+    
+    
+
 
   });
-
  
 </script>
 <link rel="stylesheet" href="style.css">
