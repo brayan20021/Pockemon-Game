@@ -21,6 +21,7 @@
   var context = canvas.getContext("2d");
   var imagen = new Image();
   imagen.src = "img/pockemon.png";
+
   imagen.onload = function () {
 
     context.drawImage(imagen, 180, 10, 450, 180);
@@ -98,13 +99,14 @@ routeImage,
 
 })
 
-const player = ({name = 'player', x = 0, y = 0, width = 130, height = 100, routeImage = null, speed = 5}) => ({
+const player = ({name = 'player', x = 0, y = 0, width = 130, height = 100, routeImage = null, speed = 5, location = 1}) => ({
 
 name,
 x,
 y,
 width,
 height,
+location,
 speed: 5,
 routeImage,
             draw () {
@@ -124,6 +126,10 @@ routeImage,
           }
 
 })
+
+var globalvar = 1;
+var startofplaceX = 650;
+var startofplaceY = 280;
 
 
 //Para saber las coordenada del puntero
@@ -146,17 +152,27 @@ canvas.addEventListener("click", function(event) {
   // Verifica si el click está dentro del área del texto de "Nuevo Juego"
   if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
 
-      context.clearRect(0, 0, canvas.width, canvas.height)
 
-    springTown = city({
-    name: 'SpringTown',
-    width: 0,
-    height: 0,
-    routeImage : "img/puebloprimavera.png"
+     context.clearRect(0, 0, canvas.width, canvas.height)
 
-    })
+     //Aqui estaremos desplegando las ciudades
+        springTown = city({
+        name: 'SpringTown',
+        width: 0,
+        height: 0,
+        routeImage : "img/puebloprimavera.png"
 
-    springTown.draw()
+        })
+
+          springTown.draw()
+
+        pallettown = city({
+        name: 'SpringTown',
+        width: 0,
+        height: 0,
+        routeImage : "img/pallettown.png"
+
+        })
 
     
   // VAMOS A DEFINIR LOS DATOS DE LA CASA, EL TAMAñO ENTRE OTROS
@@ -188,8 +204,8 @@ canvas.addEventListener("click", function(event) {
     var firstplayer = player({
 
     name        :    "Carlos",
-    x           :    650 ,
-    y           :    280 ,
+    x,
+    y,
     routeImage  :    "img/player.png",
     speed       :    5,
 
@@ -207,9 +223,9 @@ canvas.addEventListener("click", function(event) {
 
           case 'ArrowUp':
 
-              if(firstplayer.y > 200){
+              if(startofplaceY > 0){
 
-              firstplayer.y -= 10; // Mover hacia arriba
+                startofplaceY -= 10; // Mover hacia arriba
               console.log("El valor de y es: " + firstplayer.y)
 
                 }
@@ -218,20 +234,22 @@ canvas.addEventListener("click", function(event) {
 
           case 'ArrowDown':
           
-                  if(firstplayer.x > 0 && firstplayer.x > 240 && firstplayer.y < 470){
+                  if(startofplaceY < 550){
                     
-                  firstplayer.y += 10; // Mover hacia abajo
+                    startofplaceY += 10; // Mover hacia abajo
                   console.log("El valor de y es: " + firstplayer.y)
                   
+                    } else if (firstplayer.x < 330){
+
                     }
 
                 break;
 
           case 'ArrowLeft':
 
-                  if(firstplayer.x > 0){
+                  if(startofplaceX > 0){
 
-                  firstplayer.x -= 10; // Mover hacia la izquierda
+                    startofplaceX -= 10; // Mover hacia la izquierda
                   console.log("El valor de x es: " + firstplayer.x)
 
                     }
@@ -241,9 +259,9 @@ canvas.addEventListener("click", function(event) {
             
           case 'ArrowRight':
 
-                  if(firstplayer.x < 650){
+                  if(startofplaceX < 760){
 
-                  firstplayer.x += 10; // Mover hacia la derecha
+                    startofplaceX += 10; // Mover hacia la derecha
                   console.log("El valor de x es: " + firstplayer.x)
                   
                   }
@@ -258,19 +276,56 @@ canvas.addEventListener("click", function(event) {
       var firstplayer1 = player({
 
         name        :    "Carlos",
-        x           :    firstplayer.x,
-        y           :    firstplayer.y ,
+        x           :    startofplaceX,
+        y           :   startofplaceY,
         routeImage  :    "img/player.png",
         speed       :    5,
+        location    :    globalvar,
 
         });
 
-        springTown.draw()
-        firstplayer1.draw()
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        console.log(firstplayer1)
+
+       
+        
+        if (firstplayer1.location === 1){
+
+          
+            springTown.draw()
+            firstplayer1.draw()
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            if(startofplaceX === 0){
+
+              changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
+
+                  if(changeworld){
+                    
+                    globalvar = 2;
+                    startofplaceX = 760;
+                    startofplaceY = 160;
+                    context.clearRect(0, 0, canvas.width, canvas.height)
+                    pallettown.draw()
+                    firstplayer1.draw()
+                  }
+            }
+
+          } else if (firstplayer1.location === 2) {
+
+            pallettown.draw()
+            firstplayer1.draw()
+            context.clearRect(0, 0, canvas.width, canvas.height);
 
 
-    })
+
+        }
+        
+        
+
+
+     })
+
+      
 
   }
 
