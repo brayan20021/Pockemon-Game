@@ -208,6 +208,49 @@ firstplayer.draw();
 
 }
 
+//Aqui estan las funciones que nos permitira mostrar el mundo de forma dinamica
+//Esta limpia pantalla y carga el mapa
+
+function springTown_views(){
+
+      globalvar = 1;
+      startofplaceX = 120;
+      startofplaceY = 270;
+      lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
+      lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+      springTown.draw();
+      natural.pause()
+      mover(startofplaceX, startofplaceY, globalvar);
+  
+}
+
+function palletTown_views(){
+
+      lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      globalvar = 2;
+      startofplaceX = 750;
+      startofplaceY = 170;
+      lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+      pallettown.draw();
+      natural.play()
+      mover(startofplaceX, startofplaceY, globalvar);
+
+}
+
+function house1_Views(){
+
+      globalvar = 10;
+      lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+      my_house.draw()
+      mover(startofplaceX, startofplaceY, globalvar);
+
+}
+
+
+
 //INTERACCION CON MENU
 layer_top.addEventListener("click", function(event) {
   var x = event.clientX - layer_top.offsetLeft;
@@ -284,7 +327,7 @@ window.addEventListener("keydown", (event) => {
   }
      
 
-    mover(startofplaceX, startofplaceY, globalvar);
+     mover(startofplaceX, startofplaceY, globalvar);
     //lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
 
     if (globalvar === 1){
@@ -294,15 +337,7 @@ window.addEventListener("keydown", (event) => {
 
               if(changeworld){
                 
-                lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
-                globalvar = 2;
-                startofplaceX = 750;
-                startofplaceY = 170;
-                lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
-                lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
-                pallettown.draw();
-                natural.play()
-                mover(startofplaceX, startofplaceY, globalvar);
+                palletTown_views()
                 //lb_map.reset();
                // lt_map.reset();
               }
@@ -313,40 +348,38 @@ window.addEventListener("keydown", (event) => {
             changeworld = confirm("¿Deseas entrar a casa?")
 
               if(changeworld){
-                globalvar = 10;
-                lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
-                lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
-                my_house.draw()
-                mover(startofplaceX, startofplaceY, globalvar);
+                house1_Views()
 
+                  }
               }
-          
+
         }
 
+        if (globalvar === 2) {
+          
+          if(startofplaceX === 760){
 
-      }
+              changeworld = confirm("¿Deseas regresar a Pueblo Primavera?")
 
-      if (globalvar === 2) {
-        
-        if(startofplaceX === 760){
+                  if(changeworld){
 
-            changeworld = confirm("¿Deseas regresar a Pueblo Primavera?")
+                    springTown_views()
 
-                if(changeworld){
-                  globalvar = 1;
-                  startofplaceX = 120;
-                  startofplaceY = 270;
-                  lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
-                  lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
-                  lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
-                  springTown.draw();
-                  natural.pause()
-                  mover(startofplaceX, startofplaceY, globalvar);
-                  //lb_map.reset();
-                // lt_map.reset();
-                }
-            }
-      }
+                  }
+              }
+        }
+
+        if(globalvar === 10){
+
+            if(startofplaceX > 330 && startofplaceX < 410 && startofplaceY > 540){
+
+              changeworld = confirm("¿Estas seguro que deseas salir de casa?")
+
+                  springTown_views()
+                  
+                  }
+        }
+
     
     
 
