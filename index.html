@@ -23,6 +23,7 @@ var natural = document.getElementById('natural')
 var globalvar = 1;
 var startofplaceX;
 var startofplaceY;
+var direccion = 1;
 
   //INICIALIZACION DE CAPAS
   var layer_bottom = document.getElementById("layer_bottom");
@@ -62,7 +63,7 @@ var startofplaceY;
 
   //DIFINCION DE ELEMENTOS DINAMICOS
   var myImage = new Image();
-  myImage.src = "img/player.png";   
+  myImage.src = "img/player/left2.png";   
   myImage.onload = function () {
                 //this.x = startofplaceX;
                 //this.y = startofplaceY;
@@ -110,6 +111,52 @@ routeImage,
            // myImage.onload = function () {
                 //this.x = startofplaceX;
                 //this.y = startofplaceY;
+                var pasosX = ((x / 2) % 2);
+                var pasosY = ((y / 2) % 2);
+                
+                switch(direccion){
+
+                  case 1:  
+                        if(pasosX == 0){
+                        myImage.src = "img/player/left1.png";
+                      } else {
+                        myImage.src = "img/player/left2.png";
+                      }
+
+                      break;
+
+                      case 2:  
+                        if(pasosY == 0){
+                        myImage.src = "img/player/up1.png";
+                      } else {
+                        myImage.src = "img/player/up2.png";
+                      }
+                      
+                      break;
+
+                      case 3:  
+                        if(pasosX == 0){
+                        myImage.src = "img/player/right1.png";
+                      } else {
+                        myImage.src = "img/player/right2.png";
+                      }
+                      
+                      break;
+
+                      case 4:  
+                        if(pasosY == 0){
+                        myImage.src = "img/player/down1.png";
+                      } else {
+                        myImage.src = "img/player/down2.png";
+                      }
+                      
+                      break;
+
+
+                }
+
+
+
                 lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
                 lt_map.drawImage(myImage, x, y, 50, 50);                
                 lt_map.font = 'bold 20px arial';
@@ -118,7 +165,17 @@ routeImage,
            // } 
           }
 })
+//En este espacio vamos a crear las casas
 
+const my_house = city({
+  name: 'myHouse',
+  with: 0,
+  height: 0,
+  routeImage: "img/house/myhouse.png"
+});
+
+
+//En este apartados vamos a crear los mundos
 const springTown = city({
         name: 'SpringTown',
         width: 0,
@@ -136,7 +193,7 @@ const pallettown = city({
         });
 
 
-  var firstplayer;
+var firstplayer;
 function mover(x, y, w) {
    firstplayer = player({
 
@@ -171,10 +228,15 @@ window.addEventListener("keydown", (event) => {
     //CAPTURA DE COORDENADAS
     switch(event.key){
       case 'ArrowUp':
+        direccion = 2;
 
           if(startofplaceY > 0){
-
+            
             startofplaceY -= 10; // Mover hacia arriba
+            
+            //umbrales
+            if (startofplaceX < 210 && startofplaceY < 220) {startofplaceY += 10;}
+            
             walking.play()
 
             }
@@ -182,7 +244,7 @@ window.addEventListener("keydown", (event) => {
             break;
 
       case 'ArrowDown':
-    
+          direccion = 4;
               if(startofplaceY < 550){
                 
                 startofplaceY += 10; // Mover hacia abajo
@@ -192,6 +254,7 @@ window.addEventListener("keydown", (event) => {
             break;
 
       case 'ArrowLeft':
+        direccion = 1;
 
               if(startofplaceX > 0){
 
@@ -204,6 +267,7 @@ window.addEventListener("keydown", (event) => {
 
         
       case 'ArrowRight':
+        direccion = 3;
 
               if(startofplaceX < 760){
 
@@ -244,6 +308,21 @@ window.addEventListener("keydown", (event) => {
               }
         }
 
+        if(startofplaceX > 430 && startofplaceX < 470 && startofplaceY > 420 && startofplaceY < 450){
+
+            changeworld = confirm("¿Deseas entrar a casa?")
+
+              if(changeworld){
+                globalvar = 10;
+                lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+                lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+                my_house.draw()
+                mover(startofplaceX, startofplaceY, globalvar);
+
+              }
+          
+        }
+
 
       }
 
@@ -257,6 +336,7 @@ window.addEventListener("keydown", (event) => {
                   globalvar = 1;
                   startofplaceX = 120;
                   startofplaceY = 270;
+                  lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
                   lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
                   lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
                   springTown.draw();
