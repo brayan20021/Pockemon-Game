@@ -2,6 +2,7 @@
 <audio id="walking" src="audio/walking.mp3"></audio>
 <audio id="natural" src="audio/natural.mp3"></audio>
 <audio id="springtown" src="audio/springtown.mp3"></audio>
+<audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
 
 <canvas id="layer_bottom"></canvas>
 <canvas id="layer_top"></canvas>
@@ -21,6 +22,7 @@ intro.play()
 var walking = document.getElementById('walking');
 var natural = document.getElementById('natural');
 var springtown_audio = document.getElementById('springtown');
+var naturalnight = document.getElementById('naturalnight');
 
 //INTERACCION CON EL PERSONAJE
 var globalvar = 1;
@@ -206,7 +208,16 @@ const pallettown = city({
 
 });
 
+const shadowVille = city({
 
+  name            : 'shadowville',
+  with            : 0,
+  height          : 0,
+  routeImage      : "img/shadowville.png",
+
+})
+
+//Aqui se va a definir los objetos de los jugadores.
 var firstplayer;
 
 function mover(x, y, w) {
@@ -252,8 +263,26 @@ function palletTown_views(){
       lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
       pallettown.draw();
       springtown_audio.pause()
+      naturalnight.pause()
       natural.play()
       mover(startofplaceX, startofplaceY, globalvar);
+
+}
+
+function shadowVille_views(){
+
+      lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      globalvar = 3;
+      startofplaceX = 740;
+      startofplaceY = 310;
+      lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+      shadowVille.draw()
+      natural.pause()
+      springtown_audio.pause()
+      naturalnight.play()
+      mover(startofplaceX, startofplaceY, globalvar);
+      
 
 }
 
@@ -310,7 +339,7 @@ window.addEventListener("keydown", (event) => {
             startofplaceY -= 10; // Mover hacia arriba
             
             //umbrales
-            if (startofplaceX < 210 && startofplaceY < 220) {startofplaceY += 10;}
+            if (globalvar === 1 && startofplaceX < 210 && startofplaceY < 220) {startofplaceY += 10;}
             
             walking.play()
 
@@ -367,7 +396,6 @@ window.addEventListener("keydown", (event) => {
               if (startofplaceX === 0){
 
                 changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
-
                     if(changeworld){
                       
                       palletTown_views()
@@ -379,7 +407,6 @@ window.addEventListener("keydown", (event) => {
               if (startofplaceX > 430 && startofplaceX < 470 && startofplaceY > 420 && startofplaceY < 450){
 
                   changeworld = confirm("¿Deseas entrar a casa?")
-
                     if(changeworld){
                       house1_Views()
 
@@ -389,7 +416,6 @@ window.addEventListener("keydown", (event) => {
               if (startofplaceX > 250 && startofplaceX < 300 && startofplaceY > 140 && startofplaceY < 190){
                   
                   changeworld = confirm("Presione aceptar para entrar al laboratorio del profesor OAK")
-
                     if(changeworld){
                       houseTeacher_views()
 
@@ -401,15 +427,38 @@ window.addEventListener("keydown", (event) => {
       
               if (startofplaceX === 760){
 
-                  changeworld = confirm("¿Deseas regresar a Pueblo Primavera?")
-
+                  changeworld = confirm("¿Deseas regresar a Ciudad Paleta?")
                       if(changeworld){
 
                         springTown_views()
 
                       }
               }
+
+              if(startofplaceX === 0 && startofplaceY > 90 && startofplaceX < 150){
+
+                  changeworld = confirm("Deseas ir a Villa sombra")
+                     if(changeworld){
+
+                        shadowVille_views();
+
+                      }
+              }
         }
+
+    if(globalvar === 3){
+
+              if(startofplaceX === 760 && startofplaceY > 290 && startofplaceY < 320){
+                  
+                  changeworld = confirm("¿Deseas regresar a aldea paleta?")
+                    if(changeworld){
+                          
+                      palletTown_views()
+
+                    }
+              }
+
+      }
 
     if (globalvar === 10){
 
