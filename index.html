@@ -1,6 +1,7 @@
 <audio id="intro" src="audio/pockemonaudio.mp3"></audio>
 <audio id="walking" src="audio/walking.mp3"></audio>
 <audio id="natural" src="audio/natural.mp3"></audio>
+<audio id="springtown" src="audio/springtown.mp3"></audio>
 
 <canvas id="layer_bottom"></canvas>
 <canvas id="layer_top"></canvas>
@@ -13,11 +14,13 @@
 
 //Audios del juego
 
-//var intro = document.getElementById("intro")
-//intro.play()
+var intro = document.getElementById("intro")
+intro.play() 
 
-var walking = document.getElementById('walking')
-var natural = document.getElementById('natural')
+
+var walking = document.getElementById('walking');
+var natural = document.getElementById('natural');
+var springtown_audio = document.getElementById('springtown');
 
 //INTERACCION CON EL PERSONAJE
 var globalvar = 1;
@@ -168,41 +171,55 @@ routeImage,
 //En este espacio vamos a crear las casas
 
 const my_house = city({
-  name: 'myHouse',
-  with: 0,
-  height: 0,
-  routeImage: "img/house/myhouse.png"
+
+  name            : 'myHouse',
+  with            : 0,
+  height          : 0,
+  routeImage      : "img/house/myhouse.png"
 });
 
+const houseTeacher = city({
+
+  name            : 'teacherHouse',
+  with            : 0,
+  height          : 0,
+  routeImage      : "img/house/house_teacher.png",
+
+});
 
 //En este apartados vamos a crear los mundos
 const springTown = city({
-        name: 'SpringTown',
-        width: 0,
-        height: 0,
-        routeImage : "img/puebloprimavera.png"
 
-        });
+  name            : 'SpringTown',
+  width           : 0,
+  height          : 0,
+  routeImage      : "img/puebloprimavera.png"
+
+});
 
 const pallettown = city({
-        name: 'pallettown',
-        width: 0,
-        height: 0,
-        routeImage : "img/pallettown.png"
 
-        });
+  name            : 'pallettown',
+  width           : 0,
+  height          : 0,
+  routeImage      : "img/pallettown.png"
+
+});
 
 
 var firstplayer;
-function mover(x, y, w) {
-   firstplayer = player({
 
-name        :    "Carlos",
-x           :     x,
-y           :     y,
-routeImage  :    "img/player.png",
-speed       :    5,
-location    :    w
+function mover(x, y, w) {
+
+firstplayer = player({
+
+  name            :    "Carlos",
+  x               :     x,
+  y               :     y,
+  routeImage      :    "img/player.png",
+  speed           :    5,
+  location        :    w
+
 });
 firstplayer.draw();
 
@@ -216,11 +233,11 @@ function springTown_views(){
       globalvar = 1;
       startofplaceX = 120;
       startofplaceY = 270;
-      lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
       lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
       lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
       springTown.draw();
-      natural.pause()
+      natural.pause();
+      springtown_audio.play()
       mover(startofplaceX, startofplaceY, globalvar);
   
 }
@@ -234,6 +251,7 @@ function palletTown_views(){
       lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
       lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
       pallettown.draw();
+      springtown_audio.pause()
       natural.play()
       mover(startofplaceX, startofplaceY, globalvar);
 
@@ -242,9 +260,19 @@ function palletTown_views(){
 function house1_Views(){
 
       globalvar = 10;
-      lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
       lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
       my_house.draw()
+      mover(startofplaceX, startofplaceY, globalvar);
+
+}
+
+function houseTeacher_views(){
+      
+      globalvar = 11;
+      lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
+      lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
+      houseTeacher.draw();
       mover(startofplaceX, startofplaceY, globalvar);
 
 }
@@ -255,11 +283,15 @@ function house1_Views(){
 layer_top.addEventListener("click", function(event) {
   var x = event.clientX - layer_top.offsetLeft;
   var y = event.clientY - layer_top.offsetTop;
+  
 
   if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
     lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
 
     springTown.draw();
+    intro.pause();
+    springtown_audio.play()
+
 
     mover(650, 280, 1);
   }
@@ -297,7 +329,7 @@ window.addEventListener("keydown", (event) => {
             break;
 
       case 'ArrowLeft':
-        direccion = 1;
+          direccion = 1;
 
               if(startofplaceX > 0){
 
@@ -310,7 +342,7 @@ window.addEventListener("keydown", (event) => {
 
         
       case 'ArrowRight':
-        direccion = 3;
+          direccion = 3;
 
               if(startofplaceX < 760){
 
@@ -331,53 +363,78 @@ window.addEventListener("keydown", (event) => {
     //lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
 
     if (globalvar === 1){
-        if(startofplaceX === 0){
 
-          changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
+              if (startofplaceX === 0){
 
-              if(changeworld){
-                
-                palletTown_views()
-                //lb_map.reset();
-               // lt_map.reset();
+                changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
+
+                    if(changeworld){
+                      
+                      palletTown_views()
+                      //lb_map.reset();
+                    // lt_map.reset();
+                    }
+              }
+
+              if (startofplaceX > 430 && startofplaceX < 470 && startofplaceY > 420 && startofplaceY < 450){
+
+                  changeworld = confirm("¿Deseas entrar a casa?")
+
+                    if(changeworld){
+                      house1_Views()
+
+                    }
+              }
+
+              if (startofplaceX > 250 && startofplaceX < 300 && startofplaceY > 140 && startofplaceY < 190){
+                  
+                  changeworld = confirm("Presione aceptar para entrar al laboratorio del profesor OAK")
+
+                    if(changeworld){
+                      houseTeacher_views()
+
+                    }
               }
         }
 
-        if(startofplaceX > 430 && startofplaceX < 470 && startofplaceY > 420 && startofplaceY < 450){
+    if (globalvar === 2) {
+      
+              if (startofplaceX === 760){
 
-            changeworld = confirm("¿Deseas entrar a casa?")
+                  changeworld = confirm("¿Deseas regresar a Pueblo Primavera?")
 
-              if(changeworld){
-                house1_Views()
+                      if(changeworld){
 
-                  }
+                        springTown_views()
+
+                      }
               }
-
         }
 
-        if (globalvar === 2) {
-          
-          if(startofplaceX === 760){
+    if (globalvar === 10){
 
-              changeworld = confirm("¿Deseas regresar a Pueblo Primavera?")
+              if (startofplaceX > 330 && startofplaceX < 410 && startofplaceY > 540){
 
+                changeworld = confirm("¿Estas seguro que deseas salir de casa?")
                   if(changeworld){
 
                     springTown_views()
-
-                  }
+                    
+                    }
               }
         }
 
-        if(globalvar === 10){
+    if (globalvar === 11){
 
-            if(startofplaceX > 330 && startofplaceX < 410 && startofplaceY > 540){
+              if (startofplaceY > 520 && startofplaceY < 550 && startofplaceX > 190 && startofplaceX < 240){
 
-              changeworld = confirm("¿Estas seguro que deseas salir de casa?")
+                  changeworld = confirm("¿Desea salir del laboratorio?")
+                    if(changeworld){
 
-                  springTown_views()
-                  
-                  }
+                      springTown_views()
+
+                    }
+              }
         }
 
     
