@@ -19,6 +19,7 @@ var intro = document.getElementById("intro")
 intro.play() 
 
 
+
 var walking = document.getElementById('walking');
 var natural = document.getElementById('natural');
 var springtown_audio = document.getElementById('springtown');
@@ -88,7 +89,7 @@ routeImage,
 
           draw () {
 
-                 var myImage = new Image();
+                var myImage = new Image();
                 myImage.src = routeImage;   
                 myImage.onload = function () {
 
@@ -160,8 +161,6 @@ routeImage,
 
                 }
 
-
-
                 lt_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height)
                 lt_map.drawImage(myImage, x, y, 50, 50);                
                 lt_map.font = 'bold 20px arial';
@@ -170,6 +169,31 @@ routeImage,
            // } 
           }
 })
+
+const nps = ({name = 'hola', x = 0, y = 0,  npsrouteImage = null, speed = 5}) => ({
+
+name,
+x,
+y,
+location,
+speed: 5,
+npsrouteImage,
+            draw () {
+  var npsmyImage = new Image();
+  npsmyImage.src = npsrouteImage;  
+  npsmyImage.onload = function () {
+                //this.x = startofplaceX;
+                //this.y = startofplaceY;
+                
+                
+
+                lb_map.drawImage(npsmyImage, x, y, 50, 50);                
+                lb_map.font = 'bold 20px';
+                lb_map.fillText("Hoenn", 160 , 320);
+            } 
+          }
+})
+
 //En este espacio vamos a crear las casas
 
 const my_house = city({
@@ -236,6 +260,28 @@ firstplayer.draw();
 
 }
 
+
+//Aqui se va a definir los nps
+
+var mother;
+
+function mothernps(x, y, w) {
+
+mother = nps({
+
+  name            :    "Hoenn",
+  x               :     x,
+  y               :     y,
+  npsrouteImage   :    "img/nps/motherleft.png",
+  speed           :    5,
+  location        :    w
+
+});
+mother.draw();
+
+}
+
+
 //Aqui estan las funciones que nos permitira mostrar el mundo de forma dinamica
 //Esta limpia pantalla y carga el mapa
 
@@ -292,6 +338,7 @@ function house1_Views(){
       lb_map.clearRect(0, 0, layer_bottom.width, layer_bottom.height);
       lt_map.clearRect(0, 0, layer_top.width, layer_top.height);
       my_house.draw()
+      mothernps(160,320,11)
       mover(startofplaceX, startofplaceY, globalvar);
 
 }
@@ -438,9 +485,9 @@ window.addEventListener("keydown", (event) => {
               if(startofplaceX === 0 && startofplaceY > 90 && startofplaceX < 150){
 
                   changeworld = confirm("Deseas ir a Villa sombra")
-                     if(changeworld){
+                    if(changeworld){
 
-                        shadowVille_views();
+                       shadowVille_views();
 
                       }
               }
