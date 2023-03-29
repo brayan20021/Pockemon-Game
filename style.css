@@ -1,9 +1,29 @@
-#layer_bottom {
+#canvas1 {
     border: 2px solid black;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
     background-color: #D3D3D3;
     margin: 0 auto;
     display: block;
+
+  }
+  #canvas3 {
+    border: 2px solid black;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+    background-color: #D3D3D3;
+
+  }
+
+  #background {
+    background-color: blue;
+    width: 800px; 
+    height: 600px;
+    margin-left: 600px;
+  }
+
+  #background2 {
+
+    margin-top: -600px;
+    margin-left: 180px;
 
   }
   
