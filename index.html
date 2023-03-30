@@ -453,6 +453,92 @@ canvas2.addEventListener("click", function(event) {
   }
 });
 
+//Aqui vamos a definir la clase para crear los pokemones
+class pokemon {
+
+      constructor(nombre, tipo, nivel, experiencia, hp, ataque, defensa, velocidad, movimientos){
+
+        this.nombre       =   nombre
+        this.tipo         =   tipo
+        this.nivel        =   nivel
+        this.experiencia  =   experiencia
+        this.hp           =   hp
+        this.ataque       =   ataque
+        this.defensa      =   defensa
+        this.velocidad    =   velocidad
+        this.movimientos  =   movimientos
+
+      }
+
+      atacar(rival){
+
+        function calcular_efectividad(tipo_atacante, tipo_oponente) {
+          if (tipo_atacante === 'Fuego' && tipo_oponente === 'Hierba') {
+            return 2; // el ataque es muy efectivo
+          } else if (tipo_atacante === 'Fuego' && tipo_oponente === 'Agua') {
+            return 0.5; // el ataque no es muy efectivo
+          } else if (tipo_atacante === 'Agua' && tipo_oponente === 'Fuego') {
+            return 2;
+          } else if (tipo_atacante === 'Agua' && tipo_oponente === 'Hierba') {
+            return 0.5;
+          } else if (tipo_atacante === 'Hierba' && tipo_oponente === 'Agua') {
+            return 2;
+          } else if (tipo_atacante === 'Hierba' && tipo_oponente === 'Fuego') {
+            return 0.5;
+          } else {
+            return 1; // el ataque tiene efectividad normal
+          }
+        }
+          
+        let efectividad = calcular_efectividad(this.tipo, rival.tipo);
+        let damage = Math.floor(((((2 * this.nivel) / 5) + 2) * this.ataque * efectividad) / rival.defensa / 50) + 2;
+        rival.hp -= damage;
+
+      }
+
+      subir_nivel(){
+      //aqui vamos a definir la logica para subir nivel
+
+      }
+
+      aprender_movimiento(){
+      //aqui la logica para aprender movimiento
+
+      }
+
+}
+
+var charmander = new pokemon(
+  "Charmander",
+   "Fuego",
+    5,
+    0,
+    39,
+    52,
+    43,
+    65,
+    ["Ascuas", "Arañazo", "Malicioso", "Gruñido"
+]);
+
+var alastor = new pokemon(
+  "Alastor",
+  "Agua",
+  6,
+  0, 
+  40,
+  50,
+  41,
+  66,
+  ["Tornado", "Arañazo", "Malicioso", "Gruñido"
+  
+]);
+
+
+
+
+
+
+
 
 
 window.addEventListener("keydown", (event) => {
