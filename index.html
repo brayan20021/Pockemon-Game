@@ -195,11 +195,11 @@ location,
 speed: 5,
 npsrouteImage,
             draw () {
-  var npsmyImage = new Image();
-  npsmyImage.src = npsrouteImage;  
-  npsmyImage.onload = function () {
-                //this.x = startofplaceX;
-                //this.y = startofplaceY;
+                var npsmyImage = new Image();
+                npsmyImage.src = npsrouteImage;  
+                npsmyImage.onload = function () {
+                              //this.x = startofplaceX;
+                              //this.y = startofplaceY;
                 
                 
 
@@ -209,6 +209,29 @@ npsrouteImage,
             } 
           }
 })
+
+const pokemones = ({pokemonname = 'hola', x = 0, y = 0,  pokemonrouteImage = null}) => ({
+
+pokemonname,
+x,
+y,
+pokemonrouteImage,
+
+            draw () {
+            var pokemonmyImage = new Image();
+            pokemonmyImage.src = pokemonrouteImage;  
+            pokemonmyImage.onload = function () {
+                          //this.x = startofplaceX;
+                          //this.y = startofplaceY;
+
+                map.drawImage(pokemonmyImage, x, y, 300, 300);                
+                //map.font = 'bold 20px';
+                //map.fillText(this.name, 160 , 320);
+            } 
+            
+          }
+});
+
 
 const freameleft = ({framename = null, x = null, y = null, width = null, height = null, freamerouteImage = null}) => ({
 
@@ -235,7 +258,7 @@ freamerouteImage,
 });
 
 //En este espacio vamos a crear el marco para informacion del jugador
-function pueblos(name, img){
+function freame(name, img){
   
 framespring = freameleft({
 
@@ -297,7 +320,18 @@ const shadowVille = city({
   height          : 0,
   routeImage      : "img/shadowville.png",
 
-})
+});
+
+//vamos a definir el lugar donde los personaje va a pelear
+const arena1 = city({
+
+name            : 'arena1',
+with            : 0,
+height          : 0,
+routeImage      : "img/arenas/arena.png",
+
+
+});
 
 //Aqui se va a definir los objetos de los jugadores.
 var firstplayer;
@@ -356,6 +390,43 @@ teacher.draw()
   
 }
 
+// Aqui estaremos definiendo los pokemones
+
+var charmander;
+
+function charmander_pk(x,y){
+  
+ charmander = pokemones({
+
+  pokemonname        : "charmander",
+  x                  : 450,
+  y                  : 100,
+  pokemonrouteImage  : "img/pokemons/optimus.png"
+
+});
+
+charmander.draw()
+
+}
+
+var alastor;
+
+function alastor_pk(x,y){
+  
+ alastor = pokemones({
+
+  pokemonname        : "alastor",
+  x                  : 130,
+  y                  : 400,
+  pokemonrouteImage  : "img/pokemons/alastor.png"
+
+});
+
+alastor.draw()
+
+}
+
+
 
 //Aqui estan las funciones que nos permitira mostrar el mundo de forma dinamica
 //Esta limpia pantalla y carga el mapa
@@ -369,7 +440,7 @@ function springTown_views(){
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
       springTown.draw();
-      pueblos("Pueblo Paleta", "img/freame/1.png")
+      freame("Pueblo Paleta", "img/freame/1.png")
       natural.pause();
       springtown_audio.play()
       mover(startofplaceX, startofplaceY, globalvar);
@@ -386,7 +457,7 @@ function palletTown_views(){
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
       pallettown.draw();
-      pueblos("Pueblo Paleta", "img/freame/2.png")
+      freame("Pueblo Paleta", "img/freame/2.png")
       springtown_audio.pause()
       naturalnight.pause()
       natural.play()
@@ -433,6 +504,16 @@ function houseTeacher_views(){
 
 }
 
+function arena1_views(){
+
+        globalvar = 21;
+        map.clearRect(0, 0, canvas1.width, canvas1.height);
+        players.clearRect(0, 0, canvas2.width, canvas2.height);
+        arena1.draw()
+        charmander_pk(580,310)
+        alastor_pk(580,310)
+
+}
 
 
 //INTERACCION CON MENU
@@ -473,10 +554,11 @@ class pokemon {
       atacar(rival){
 
         function calcular_efectividad(tipo_atacante, tipo_oponente) {
+          
           if (tipo_atacante === 'Fuego' && tipo_oponente === 'Hierba') {
-            return 2; // el ataque es muy efectivo
+            return 2; 
           } else if (tipo_atacante === 'Fuego' && tipo_oponente === 'Agua') {
-            return 0.5; // el ataque no es muy efectivo
+            return 0.5; 
           } else if (tipo_atacante === 'Agua' && tipo_oponente === 'Fuego') {
             return 2;
           } else if (tipo_atacante === 'Agua' && tipo_oponente === 'Hierba') {
@@ -486,7 +568,7 @@ class pokemon {
           } else if (tipo_atacante === 'Hierba' && tipo_oponente === 'Fuego') {
             return 0.5;
           } else {
-            return 1; // el ataque tiene efectividad normal
+            return 1; 
           }
         }
           
@@ -523,14 +605,14 @@ var charmander = new pokemon(
 var alastor = new pokemon(
   "Alastor",
   "Agua",
-  6,
-  0, 
-  40,
-  50,
-  41,
-  66,
-  ["Tornado", "Arañazo", "Malicioso", "Gruñido"
-  
+    6,
+    0, 
+    40,
+    50,
+    41,
+    66,
+    ["Tornado", "Arañazo", "Malicioso", "Gruñido"
+
 ]);
 
 
@@ -632,6 +714,13 @@ window.addEventListener("keydown", (event) => {
                     if(changeworld){
                       houseTeacher_views()
 
+                    }
+              }
+
+              if(startofplaceX === 760){
+                  changeworld = confirm("Vas a entrar a la sala de pelea como prueba")
+                    if(changeworld){
+                      arena1_views()
                     }
               }
         }
