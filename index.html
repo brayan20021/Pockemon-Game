@@ -3,6 +3,7 @@
 <audio id="natural" src="audio/natural.mp3"></audio>
 <audio id="springtown" src="audio/springtown.mp3"></audio>
 <audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
+<audio id="pokemon-battle" src="audio/pokemonbattle.mp3"></audio>
 
 <div id="background">
   <canvas id="canvas1"></canvas>
@@ -30,6 +31,7 @@ var walking = document.getElementById('walking');
 var natural = document.getElementById('natural');
 var springtown_audio = document.getElementById('springtown');
 var naturalnight = document.getElementById('naturalnight');
+var pokemon_battle = document.getElementById("pokemon-battle");
 
 //INTERACCION CON EL PERSONAJE
 var globalvar = 1;
@@ -335,7 +337,7 @@ const shadowVille = city({
 });
 
 //vamos a definir el lugar donde los personaje va a pelear
-const arena1 = city({
+const arena_forest = city({
 
 name            : 'arena1',
 with            : 0,
@@ -458,7 +460,7 @@ function springTown_views(){
       natural.pause();
       springtown_audio.play()
       mover(startofplaceX, startofplaceY, globalvar);
-
+      
 }
 
 function palletTown_views(){
@@ -471,7 +473,7 @@ function palletTown_views(){
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
       pallettown.draw();
-      freame("Pueblo Paleta", "img/freame/2.png")
+      freame("Aldea Paleta", "img/freame/2.png")
       springtown_audio.pause()
       naturalnight.pause()
       natural.play()
@@ -518,59 +520,43 @@ function houseTeacher_views(){
 
 }
 
-function arena1_views(){
+//Esta funcion nos permite visualizar la pelea de los pokemones, y recibira como argumento,
+//la arena que es de donde se va a pelear, el pokemonplayer que es el jugador, y el rival
+function arenafight(arena,pokemonplayer,rival){
         
         let z = 0
         let f = 300
         moving = true
         globalvar = 21;
+        pokemon_battle.play()
+        springtown_audio.pause()
         map.clearRect(0, 0, canvas1.width, canvas1.height);
         players.clearRect(0, 0, canvas2.width, canvas2.height);
-        arena1.draw()
+        //Aqui es donde se dibujara el fondo de la arena, es dinamico.
+        arena.draw()
         
-          /* for(let i = 0; i <= 500; i++){ */
-        
-           
 //Aqui se estara definiendo el movimiento de los pokemon a la hora de pelear
+//FUNCION IMPORTANTE PARA PELEAR LOS DOS POKEMONES DE FORMA DINAMICA
+  setInterval(function(){
 
-           setInterval(function(){
+          rival(450, z)
+          pokemonplayer(130, f)
 
-            charmander_pk(450, z)
-            alastor_pk(130, f)
+          if(moving){
+          z++
+            f--
+                if(z === 100){moving = false}
 
-                    if(moving){
-                      z++
-                      f--
-                        if(z === 100){
-                      
-                          moving = false
+          } else {
+              z--
+                f++
+                    if(z <= 0){ moving = true}
 
-                        }
-                      
-                      } else {
-                        z--
-                        f++
-                          if(z <= 0){
+                }
 
-                            moving = true
-                          }
+        }, 60)           
+    } 
 
-                      }
-
-/*             if(f <= 360){
-            alastor_pk(130, f--)
-            } else {
-              alastor_pk(130, f++)
-
-            } */
-           }, 60) 
-            
-            console.log(z)
-
-      /*     }  */
-        
-
-}
 
 
 //INTERACCION CON MENU
@@ -771,7 +757,7 @@ window.addEventListener("keydown", (event) => {
               if(startofplaceX === 760){
                   changeworld = confirm("Vas a entrar a la sala de pelea como prueba")
                     if(changeworld){
-                      arena1_views()
+                      arenafight(arena_forest,alastor_pk,charmander_pk)
                     }
               }
         }
