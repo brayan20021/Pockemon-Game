@@ -210,12 +210,13 @@ npsrouteImage,
           }
 })
 
-const pokemones = ({pokemonname = 'hola', x = 0, y = 0,  pokemonrouteImage = null}) => ({
+const pokemones = ({pokemonname = 'hola', x = 0, y = 0,  pokemonrouteImage = null, tipo = null}) => ({
 
 pokemonname,
 x,
 y,
 pokemonrouteImage,
+tipo,
 
             draw () {
             var pokemonmyImage = new Image();
@@ -223,13 +224,25 @@ pokemonrouteImage,
             pokemonmyImage.onload = function () {
                           //this.x = startofplaceX;
                           //this.y = startofplaceY;
+                if(tipo === 2){
 
-                map.drawImage(pokemonmyImage, x, y, 300, 300);                
+                  players.clearRect(400, 0, 400, 600)
+
+                } else if(tipo === 1) {
+
+                  players.clearRect(0, 0, 400, 600);
+                  //Aqui vamos a limpiar el otro personaje
+
+                }
+            
+                players.drawImage(pokemonmyImage, x, y, 300, 300);                
                 //map.font = 'bold 20px';
                 //map.fillText(this.name, 160 , 320);
             } 
+
             
           }
+          
 });
 
 
@@ -275,7 +288,6 @@ framespring = freameleft({
 
 
 
-//En este espacio vamos a crear el marco para informacion del jugador
 
 const my_house = city({
 
@@ -399,9 +411,10 @@ function charmander_pk(x,y){
  charmander = pokemones({
 
   pokemonname        : "charmander",
-  x                  : 450,
-  y                  : 100,
-  pokemonrouteImage  : "img/pokemons/optimus.png"
+  x                  : x,
+  y                  : y,
+  pokemonrouteImage  : "img/pokemons/optimus.png",
+  tipo               : 2
 
 });
 
@@ -416,9 +429,10 @@ function alastor_pk(x,y){
  alastor = pokemones({
 
   pokemonname        : "alastor",
-  x                  : 130,
-  y                  : 400,
-  pokemonrouteImage  : "img/pokemons/alastor.png"
+  x                  : x,
+  y                  : y,
+  pokemonrouteImage  : "img/pokemons/alastor.png",
+  tipo               : 1
 
 });
 
@@ -505,13 +519,56 @@ function houseTeacher_views(){
 }
 
 function arena1_views(){
-
+        
+        let z = 0
+        let f = 300
+        moving = true
         globalvar = 21;
         map.clearRect(0, 0, canvas1.width, canvas1.height);
         players.clearRect(0, 0, canvas2.width, canvas2.height);
         arena1.draw()
-        charmander_pk(580,310)
-        alastor_pk(580,310)
+        
+          /* for(let i = 0; i <= 500; i++){ */
+        
+           
+//Aqui se estara definiendo el movimiento de los pokemon a la hora de pelear
+
+           setInterval(function(){
+
+            charmander_pk(450, z)
+            alastor_pk(130, f)
+
+                    if(moving){
+                      z++
+                      f--
+                        if(z === 100){
+                      
+                          moving = false
+
+                        }
+                      
+                      } else {
+                        z--
+                        f++
+                          if(z <= 0){
+
+                            moving = true
+                          }
+
+                      }
+
+/*             if(f <= 360){
+            alastor_pk(130, f--)
+            } else {
+              alastor_pk(130, f++)
+
+            } */
+           }, 60) 
+            
+            console.log(z)
+
+      /*     }  */
+        
 
 }
 
@@ -617,12 +674,6 @@ var alastor = new pokemon(
 
 
 
-
-
-
-
-
-
 window.addEventListener("keydown", (event) => {
     //CAPTURA DE COORDENADAS
     switch(event.key){
@@ -634,7 +685,7 @@ window.addEventListener("keydown", (event) => {
             startofplaceY -= 10; // Mover hacia arriba
             
             //umbrales
-            if (globalvar === 1 && startofplaceX < 210 && startofplaceY < 220) {startofplaceY += 10;}
+            if (globalvar === 1 && startofplaceX < 210 && startofplaceY > 180) {startofplaceY += 10;}
             
             walking.play()
 
