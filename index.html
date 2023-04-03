@@ -58,9 +58,9 @@ var direccion = 1;
   canvas2.width = 800;
   canvas2.height = 600;
 
-  canvas3.setAttribute("style", "z-index: 2; position:relative;");
-  canvas3.width = 400;
-  canvas3.height = 600;
+  canvas3.setAttribute("style", "z-index: 1; position:relative;");
+  canvas3.width = 1230;
+  canvas3.height = 610;
 
   //INICIALIZACION DE LAYER BOTTOM 
   var imagen = new Image();
@@ -94,6 +94,23 @@ var direccion = 1;
                 players.fillText(this.name, this.x , this.y);
             }
 
+//INTERACCION CON MENU
+canvas2.addEventListener("click", function(event) {
+  var x = event.clientX - canvas2.offsetLeft;
+  var y = event.clientY - canvas2.offsetTop;
+  
+
+  if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
+    map.clearRect(0, 0, canvas1.width, canvas1.height)
+
+    springTown.draw();
+    intro.pause();
+    springtown_audio.play()
+
+
+    mover(650, 280, 1);
+  }
+});
             
 
 const city = ({name = 'Principal', x = null, y = null, width = null, height = null, routeImage = null}) => ({
@@ -248,38 +265,72 @@ tipo,
 });
 
 
-const freameleft = ({framename = null, x = null, y = null, width = null, height = null, freamerouteImage = null}) => ({
+const freameleft = ({framename = null, x = null, y = null, width = null, height = null, freamerouteImage = null, fight = false, freamePlayer = null, freameRival = null}) => ({
 
 framename,
 x,
 y,
 width,
 height,
+fight,
 freamerouteImage,
+freamePlayer,
+freameRival,
 
           draw () {
 
-                var framemyImage = new Image();
-                framemyImage.src = freamerouteImage;   
-                framemyImage.onload = function () {
-                    framecanvas.drawImage(framemyImage, width, height, 300, 500);
-                    //framecanvas.drawImage("img/freame/framepicture.png", 300, 500);
-                }
-                framecanvas.font = '30px none';
-                framecanvas.fillText(this.framename, 10, 550);
+            if(fight === true){
 
+                framecanvas.clearRect(0, 0, canvas3.width, canvas3.height)
+                
+                var framemyImage = new Image();
+                framemyImage.src = "img/freame/freamepoke.png"; 
+
+                framemyImage.onload = function () {
+                framecanvas.drawImage(framemyImage, width, height, canvas3.width,canvas3.height);
+                    
+                framecanvas.font = 'bold 20px pokemon';
+                framecanvas.fillStyle = "white"
+                framecanvas.fillText("TEXT", 10, 550);
+                framecanvas.fillText(`Rival: ${freameRival.nombre}`, 65, 50);
+                framecanvas.fillText(`VIDA: ${freameRival.hp}`, 65, 100)
+
+                framecanvas.fillText(`Pokemon: ${freamePlayer.nombre}`, 180, 450);
+                framecanvas.fillText(`VIDA: ${freamePlayer.hp}`, 65, 580)
+
+
+                }
+
+                } else {
+                
+                    framecanvas.clearRect(0, 0, canvas3.width, canvas3.height)
+                    var framemyImage = new Image();
+                    framemyImage.src = "img/freame/freamepoke.png";   
+
+                    framemyImage.onload = function () {
+                    framecanvas.drawImage(framemyImage, width, height, canvas3.width,canvas3.height);
+                    framecanvas.font = 'bold 20px pokemon';
+                    framecanvas.fillStyle = "white"
+                    framecanvas.fillText("Pokemon Game", 10, 550);
+            
+                    }
+
+                    }
               }
  
 });
 
 //En este espacio vamos a crear el marco para informacion del jugador
-function freame(name, img){
+function freame(name, img, fights,freamePlayer,freameRival){
   
 framespring = freameleft({
 
       framename: name,
       width: 0,
       height: 0,
+      fight: fights,
+      freamePlayer: freamePlayer,
+      freameRival: freameRival,
       freamerouteImage: img,
 
   });
@@ -287,6 +338,7 @@ framespring = freameleft({
   framespring.draw()
 
 }
+freame()
 
 
 
@@ -406,11 +458,11 @@ teacher.draw()
 
 // Aqui estaremos definiendo los pokemones
 
-var charmander;
+var charmander_image;
 
 function charmander_pk(x,y){
   
- charmander = pokemones({
+ charmander_image = pokemones({
 
   pokemonname        : "charmander",
   x                  : x,
@@ -420,15 +472,15 @@ function charmander_pk(x,y){
 
 });
 
-charmander.draw()
+charmander_image.draw()
 
 }
 
-var alastor;
+var alastor_image;
 
 function alastor_pk(x,y){
   
- alastor = pokemones({
+ alastor_image = pokemones({
 
   pokemonname        : "alastor",
   x                  : x,
@@ -438,7 +490,7 @@ function alastor_pk(x,y){
 
 });
 
-alastor.draw()
+alastor_image.draw()
 
 }
 
@@ -542,7 +594,7 @@ function arenafight(arena,pokemonplayer,rival){
           rival(450, z)
           pokemonplayer(130, f)
 
-          if(moving){
+        if(moving){
           z++
             f--
                 if(z === 100){moving = false}
@@ -554,28 +606,11 @@ function arenafight(arena,pokemonplayer,rival){
 
                 }
 
-        }, 60)           
+        }, 60)         
     } 
 
 
 
-//INTERACCION CON MENU
-canvas2.addEventListener("click", function(event) {
-  var x = event.clientX - canvas2.offsetLeft;
-  var y = event.clientY - canvas2.offsetTop;
-  
-
-  if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
-    map.clearRect(0, 0, canvas1.width, canvas1.height)
-
-    springTown.draw();
-    intro.pause();
-    springtown_audio.play()
-
-
-    mover(650, 280, 1);
-  }
-});
 
 //Aqui vamos a definir la clase para crear los pokemones
 class pokemon {
@@ -618,6 +653,8 @@ class pokemon {
         let efectividad = calcular_efectividad(this.tipo, rival.tipo);
         let damage = Math.floor(((((2 * this.nivel) / 5) + 2) * this.ataque * efectividad) / rival.defensa / 50) + 2;
         rival.hp -= damage;
+        //Esta parte nos permitira actualizar el estado del pokemon en el canvas izquierdo
+        freame("Arena Spring", null, true,alastor,charmander)
 
       }
 
@@ -758,6 +795,9 @@ window.addEventListener("keydown", (event) => {
                   changeworld = confirm("Vas a entrar a la sala de pelea como prueba")
                     if(changeworld){
                       arenafight(arena_forest,alastor_pk,charmander_pk)
+                      freame("Arena Spring", "img/freame/freamepoke.png", true,alastor,charmander)
+                      //(name, img, fights,framePlayer,frameRival)
+                      
                     }
               }
         }
@@ -832,5 +872,5 @@ window.addEventListener("keydown", (event) => {
   });
  
 </script>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <script src="messages.js"></script>
