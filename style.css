@@ -37,3 +37,86 @@
   body {
     font-family: 'pokemon', sans-serif;
   }
+
+  #enemy-life-bar {
+    width: 200px;
+    height: 20px;
+    background-color: #ccc;
+    border: 1px solid #333;
+    position: absolute;
+    margin-top: 100px;
+    margin-left: 250px;
+    z-index: 3;
+    display: none;
+  }
+  
+  #enemy-life-bar .lifeenemy {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    background-color: rgb(251, 255, 0);
+  }
+  
+  #enemy-life-bar .porcentenemy {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    font-weight: bold;
+    color: rgb(3, 0, 0);
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+  }
+
+  
+  #player-life-bar {
+    width: 200px;
+    height: 20px;
+    background-color: #ccc;
+    border: 1px solid #333;
+    position: absolute;
+    margin-top: 570px;
+    margin-left: 250px;
+    z-index: 3;
+    display: none;
+  }
+  
+  #player-life-bar .lifeplayer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    background-color: rgb(0, 196, 75);
+  }
+  
+  #player-life-bar .porcentplayer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    font-weight: bold;
+    color: rgb(3, 0, 0);
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+  }
+
+  #menu {
+
+    width: 200px;
+    height: 20px;
+    position: absolute;
+    margin-top: 150px;
+    margin-left: 250px;
+    z-index: 3;
+
+  }
+
+
+  

@@ -5,6 +5,52 @@
 <audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
 <audio id="pokemon-battle" src="audio/pokemonbattle.mp3"></audio>
 
+
+
+
+
+<div id="enemy-life-bar">
+  <div class="lifeenemy"></div>
+  <div class="porcentenemy"></div>
+</div>
+
+<div id="menu">
+  <ul id="menu1" class="nav justify-content-center ">
+      <li class="nav-item">
+          <a onclick="mostrarAtaques()" class="nav-link active" href="#" aria-current="page">Atacar</a>
+      </li>
+      <li class="nav-item">
+          <a class="nav-link" href="#">Defenderse</a>
+      </li>
+      <li class="nav-item">
+          <a onclick="correrMenu()" class="nav-link disabled" href="#">Correr</a>
+      </li>
+  </ul>
+
+  <ul id="menu2" style="display: none;" class="nav justify-content-center ">
+    <li class="nav-item">
+        <a onclick="GrunidoAtaqueMenu()" class="nav-link active" href="#" aria-current="page">Gruñido</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Tornado</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled" href="#">Zarpaso</a>
+    </li>
+    <li class="nav-item">
+      <a onclick="mostrarMenu()" class="nav-link disabled" href="#">Atras</a>
+  </li>
+</ul>
+
+</div>
+
+
+<div id="player-life-bar">
+  <div class="lifeplayer"></div>
+  <div class="porcentplayer"></div>
+</div>
+
+
 <div id="background">
   <canvas id="canvas1"></canvas>
   <canvas id="canvas2"></canvas>
@@ -19,13 +65,55 @@
   // const miAudio = document.getElementById("mi-audio");
   //miAudio.play();
 
+  function mostrarAtaques(){
+
+    let menu1 = document.getElementById("menu1");
+    let menu2 = document.getElementById("menu2");
+    menu1.style.display = "none";
+    menu2.style.display = "block";
+
+  }
+
+  function mostrarMenu(){
+
+    let menu1 = document.getElementById("menu1");
+    let menu2 = document.getElementById("menu2");
+    menu1.style.display = "block";
+    menu2.style.display = "none";
+
+}
+
+
+  function correrMenu(){
+    let menu1 = document.getElementById("menu1");
+    let menu2 = document.getElementById("menu2");
+    menu1.style.display = "none";
+    menu2.style.display = "none";
+
+    map.clearRect(0, 0, canvas1.width, canvas1.height)
+    players.clearRect(0, 0, canvas2.width, canvas2.height);
+
+/*     springTown.draw();
+    intro.pause();
+    springtown_audio.play() */
+    springTown_views()
+    combate = false;
+
+
+
+    mover(650, 280, 1);
+
+  }
+  function GrunidoAtaqueMenu(){
+    ataq = true;
+
+  }
+
 
 //Audios del juego
 
 var intro = document.getElementById("intro")
 intro.play() 
-
-
 
 var walking = document.getElementById('walking');
 var natural = document.getElementById('natural');
@@ -38,6 +126,20 @@ var globalvar = 1;
 var startofplaceX;
 var startofplaceY;
 var direccion = 1;
+var combate = false;
+
+var barraVidaenemy = document.getElementById("enemy-life-bar");
+var barraVidaplayer = document.getElementById("player-life-bar");
+
+function barra_Salud(player,rival){
+  barraVidaenemy.style.display = "block";
+  barraVidaenemy.querySelector(".lifeenemy").style.width = rival + "%";
+  barraVidaenemy.querySelector(".porcentenemy").textContent =  rival + "%";
+
+  barraVidaplayer.style.display = "block";
+  barraVidaplayer.querySelector(".lifeplayer").style.width = player + "%";
+  barraVidaplayer.querySelector(".porcentplayer").textContent =  player + "%";
+}
 
 
   //INICIALIZACION DE CAPAS
@@ -293,10 +395,10 @@ freameRival,
                 framecanvas.fillStyle = "white"
                 framecanvas.fillText("TEXT", 10, 550);
                 framecanvas.fillText(`Rival: ${freameRival.nombre}`, 65, 50);
-                framecanvas.fillText(`VIDA: ${freameRival.hp}`, 65, 100)
+                framecanvas.fillText(`Nivel: ${freameRival.nivel}`, 65, 80)
 
                 framecanvas.fillText(`Pokemon: ${freamePlayer.nombre}`, 180, 450);
-                framecanvas.fillText(`VIDA: ${freamePlayer.hp}`, 65, 580)
+                framecanvas.fillText(`Nivel: ${freamePlayer.nivel}`, 65, 580)
 
 
                 }
@@ -305,17 +407,17 @@ freameRival,
                 
                     framecanvas.clearRect(0, 0, canvas3.width, canvas3.height)
                     var framemyImage = new Image();
-                    framemyImage.src = "img/freame/freamepoke.png";   
+                    framemyImage.src = "img/freame/freamepoke2.png";   
 
                     framemyImage.onload = function () {
                     framecanvas.drawImage(framemyImage, width, height, canvas3.width,canvas3.height);
-                    framecanvas.font = 'bold 20px pokemon';
+                    framecanvas.font = '  20px pokemon';
                     framecanvas.fillStyle = "white"
-                    framecanvas.fillText("Pokemon Game", 10, 550);
+                    framecanvas.fillText("Carlos Rodriguez Games ™.", 60, 600);
             
                     }
 
-                    }
+                  }
               }
  
 });
@@ -459,6 +561,7 @@ teacher.draw()
 // Aqui estaremos definiendo los pokemones
 
 var charmander_image;
+var myVar;
 
 function charmander_pk(x,y){
   
@@ -472,7 +575,18 @@ function charmander_pk(x,y){
 
 });
 
-charmander_image.draw()
+if (ataq) {
+
+    myVar = setTimeout(function () {ataq = false; alastor.atacar(charmander)}, 1000);
+      } 
+        else {
+          clearTimeout(myVar);
+          charmander_image.draw();
+
+          
+        ataq = false;
+
+        }
 
 }
 
@@ -499,11 +613,18 @@ alastor_image.draw()
 //Aqui estan las funciones que nos permitira mostrar el mundo de forma dinamica
 //Esta limpia pantalla y carga el mapa
 
-function springTown_views(){
+function springTown_views(inicio = true){
 
       globalvar = 1;
+      if(inicio === true){
+      startofplaceX = 650;
+      startofplaceY = 280;
+      } else {
+
       startofplaceX = 120;
       startofplaceY = 270;
+
+      }
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
@@ -574,6 +695,8 @@ function houseTeacher_views(){
 
 //Esta funcion nos permite visualizar la pelea de los pokemones, y recibira como argumento,
 //la arena que es de donde se va a pelear, el pokemonplayer que es el jugador, y el rival
+
+var ataq = false;
 function arenafight(arena,pokemonplayer,rival){
         
         let z = 0
@@ -585,14 +708,17 @@ function arenafight(arena,pokemonplayer,rival){
         map.clearRect(0, 0, canvas1.width, canvas1.height);
         players.clearRect(0, 0, canvas2.width, canvas2.height);
         //Aqui es donde se dibujara el fondo de la arena, es dinamico.
-        arena.draw()
+     
+        arena.draw() 
         
 //Aqui se estara definiendo el movimiento de los pokemon a la hora de pelear
 //FUNCION IMPORTANTE PARA PELEAR LOS DOS POKEMONES DE FORMA DINAMICA
-  setInterval(function(){
 
+ var animarPokemon = setInterval(function(){
+    if(combate === true){
           rival(450, z)
           pokemonplayer(130, f)
+        
 
         if(moving){
           z++
@@ -602,12 +728,31 @@ function arenafight(arena,pokemonplayer,rival){
           } else {
               z--
                 f++
-                    if(z <= 0){ moving = true}
+                    if(z <= 0){moving = true}
 
                 }
 
-        }, 60)         
+        } else {
+          clearInterval(animarPokemon);
+        }} , 60)         
+ 
+
+
+/*      setInterval(function(){
+
+        alastor.atacar(charmander)
+
+      }, 5000) */
+      
+/*       setInterval(function(){
+
+        
+        charmander.atacar(alastor)
+
+      }, 5000)    */ 
+    
     } 
+  
 
 
 
@@ -656,6 +801,9 @@ class pokemon {
         //Esta parte nos permitira actualizar el estado del pokemon en el canvas izquierdo
         freame("Arena Spring", null, true,alastor,charmander)
 
+        //Aqui se va a mostrar la barra del enemigo y el jugador
+        barra_Salud(this.hp,rival.hp)
+
       }
 
       subir_nivel(){
@@ -670,17 +818,19 @@ class pokemon {
 
 }
 
+
+
 var charmander = new pokemon(
   "Charmander",
    "Fuego",
     5,
     0,
-    39,
+    500,
     52,
     43,
     65,
-    ["Ascuas", "Arañazo", "Malicioso", "Gruñido"
-]);
+    ["Ascuas", "Arañazo", "Malicioso", "Gruñido"]  
+);
 
 var alastor = new pokemon(
   "Alastor",
@@ -691,9 +841,8 @@ var alastor = new pokemon(
     50,
     41,
     66,
-    ["Tornado", "Arañazo", "Malicioso", "Gruñido"
-
-]);
+    ["Tornado", "Arañazo", "Malicioso", "Gruñido"]
+);
 
 
 
@@ -794,8 +943,12 @@ window.addEventListener("keydown", (event) => {
               if(startofplaceX === 760){
                   changeworld = confirm("Vas a entrar a la sala de pelea como prueba")
                     if(changeworld){
+                      globalvar = 21;
+                      combate = true;
                       arenafight(arena_forest,alastor_pk,charmander_pk)
                       freame("Arena Spring", "img/freame/freamepoke.png", true,alastor,charmander)
+                      barra_Salud("Salud", "Rival")
+                      mostrarMenu()
                       //(name, img, fights,framePlayer,frameRival)
                       
                     }
@@ -809,7 +962,7 @@ window.addEventListener("keydown", (event) => {
                   changeworld = confirm("¿Deseas regresar a Ciudad Paleta?")
                       if(changeworld){
 
-                        springTown_views()
+                        springTown_views(false)
 
                       }
               }
