@@ -17,28 +17,28 @@
 <div id="menu">
   <ul id="menu1" class="nav justify-content-center ">
       <li class="nav-item">
-          <a onclick="mostrarAtaques()" class="nav-link active" href="#" aria-current="page">Atacar</a>
+          <a onclick="mostrarAtaques()" class="nav-link active colortexto boton-juego" href="#" aria-current="page">Atacar</a>
       </li>
       <li class="nav-item">
-          <a class="nav-link" href="#">Defenderse</a>
+          <a class="nav-link colortexto boton-juego" href="#">Defenderse</a>
       </li>
       <li class="nav-item">
-          <a onclick="correrMenu()" class="nav-link disabled" href="#">Correr</a>
+          <a onclick="correrMenu()" class="nav-link disabled colortexto boton-juego" href="#">Correr</a>
       </li>
   </ul>
 
   <ul id="menu2" style="display: none;" class="nav justify-content-center ">
     <li class="nav-item">
-        <a onclick="GrunidoAtaqueMenu()" class="nav-link active" href="#" aria-current="page">Gruñido</a>
+        <a onclick="GrunidoAtaqueMenu()" class="nav-link active colortexto boton-juego" href="#" aria-current="page">Gruñido</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Tornado</a>
+        <a class="nav-link colortexto boton-juego" href="#">Tornado</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link disabled" href="#">Zarpaso</a>
+        <a class="nav-link disabled colortexto boton-juego" href="#">Zarpaso</a>
     </li>
     <li class="nav-item">
-      <a onclick="mostrarMenu()" class="nav-link disabled" href="#">Atras</a>
+      <a onclick="mostrarMenu()" class="nav-link disabled colortexto boton-juego" href="#">Atras</a>
   </li>
 </ul>
 
@@ -65,6 +65,19 @@
   // const miAudio = document.getElementById("mi-audio");
   //miAudio.play();
 
+var barraVidaenemy = document.getElementById("enemy-life-bar");
+var barraVidaplayer = document.getElementById("player-life-bar");
+
+function barra_Salud(player,rival){
+  barraVidaenemy.style.display = "block";
+  barraVidaenemy.querySelector(".lifeenemy").style.width = rival + "%";
+  barraVidaenemy.querySelector(".porcentenemy").textContent =  rival + "%";
+
+  barraVidaplayer.style.display = "block";
+  barraVidaplayer.querySelector(".lifeplayer").style.width = player + "%";
+  barraVidaplayer.querySelector(".porcentplayer").textContent =  player + "%";
+}
+
   function mostrarAtaques(){
 
     let menu1 = document.getElementById("menu1");
@@ -89,13 +102,19 @@
     let menu2 = document.getElementById("menu2");
     menu1.style.display = "none";
     menu2.style.display = "none";
+    barraVidaenemy.style.transition ="none"
+    barraVidaplayer.style.transition ="none"
+    barraVidaenemy.style.display = "none";
+    barraVidaplayer.style.display = "none";
 
-    map.clearRect(0, 0, canvas1.width, canvas1.height)
-    players.clearRect(0, 0, canvas2.width, canvas2.height);
+
+    //map.clearRect(0, 0, canvas1.width, canvas1.height)
+    //players.clearRect(0, 0, canvas2.width, canvas2.height);
 
 /*     springTown.draw();
     intro.pause();
     springtown_audio.play() */
+    
     springTown_views()
     combate = false;
 
@@ -128,18 +147,6 @@ var startofplaceY;
 var direccion = 1;
 var combate = false;
 
-var barraVidaenemy = document.getElementById("enemy-life-bar");
-var barraVidaplayer = document.getElementById("player-life-bar");
-
-function barra_Salud(player,rival){
-  barraVidaenemy.style.display = "block";
-  barraVidaenemy.querySelector(".lifeenemy").style.width = rival + "%";
-  barraVidaenemy.querySelector(".porcentenemy").textContent =  rival + "%";
-
-  barraVidaplayer.style.display = "block";
-  barraVidaplayer.querySelector(".lifeplayer").style.width = player + "%";
-  barraVidaplayer.querySelector(".porcentplayer").textContent =  player + "%";
-}
 
 
   //INICIALIZACION DE CAPAS
@@ -393,12 +400,12 @@ freameRival,
                     
                 framecanvas.font = 'bold 20px pokemon';
                 framecanvas.fillStyle = "white"
-                framecanvas.fillText("TEXT", 10, 550);
                 framecanvas.fillText(`Rival: ${freameRival.nombre}`, 65, 50);
                 framecanvas.fillText(`Nivel: ${freameRival.nivel}`, 65, 80)
 
                 framecanvas.fillText(`Pokemon: ${freamePlayer.nombre}`, 180, 450);
-                framecanvas.fillText(`Nivel: ${freamePlayer.nivel}`, 65, 580)
+                framecanvas.fillText(`Nivel: ${freamePlayer.nivel}`, 185, 480)
+                framecanvas.fillText("TEXT", 10, 550);
 
 
                 }
@@ -577,17 +584,20 @@ function charmander_pk(x,y){
 
 if (ataq) {
 
-    myVar = setTimeout(function () {ataq = false; alastor.atacar(charmander)}, 1000);
-      } 
-        else {
+    myVar = setTimeout(function () {
+      
+      ataq = false; alastor.atacar(charmander)
+    
+    }, 800);
+      }
+       else {
+
           clearTimeout(myVar);
           charmander_image.draw();
 
-          
         ataq = false;
 
         }
-
 }
 
 var alastor_image;
@@ -617,14 +627,19 @@ function springTown_views(inicio = true){
 
       globalvar = 1;
       if(inicio === true){
-      startofplaceX = 650;
-      startofplaceY = 280;
+
+        startofplaceX = 650;
+        startofplaceY = 280;
+
       } else {
 
-      startofplaceX = 120;
-      startofplaceY = 270;
+        startofplaceX = 120;
+        startofplaceY = 270;
 
       }
+      barraVidaenemy.style.display = "none";
+      barraVidaplayer.style.display = "none";
+
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
@@ -646,10 +661,10 @@ function palletTown_views(){
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
       pallettown.draw();
-      freame("Aldea Paleta", "img/freame/2.png")
-      springtown_audio.pause()
-      naturalnight.pause()
-      natural.play()
+      freame("Aldea Paleta", "img/freame/2.png");
+      springtown_audio.pause();
+      naturalnight.pause();
+      natural.play();
       mover(startofplaceX, startofplaceY, globalvar);
 
 }
@@ -662,13 +677,12 @@ function shadowVille_views(){
       startofplaceY = 310;
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
-      shadowVille.draw()
-      natural.pause()
-      springtown_audio.pause()
-      naturalnight.play()
+      shadowVille.draw();
+      natural.pause();
+      springtown_audio.pause();
+      naturalnight.play();
       mover(startofplaceX, startofplaceY, globalvar);
       
-
 }
 
 function house1_Views(){
@@ -707,8 +721,8 @@ function arenafight(arena,pokemonplayer,rival){
         springtown_audio.pause()
         map.clearRect(0, 0, canvas1.width, canvas1.height);
         players.clearRect(0, 0, canvas2.width, canvas2.height);
+
         //Aqui es donde se dibujara el fondo de la arena, es dinamico.
-     
         arena.draw() 
         
 //Aqui se estara definiendo el movimiento de los pokemon a la hora de pelear
@@ -744,7 +758,7 @@ function arenafight(arena,pokemonplayer,rival){
 
       }, 5000) */
       
-/*       setInterval(function(){
+/*        setInterval(function(){
 
         
         charmander.atacar(alastor)
@@ -753,6 +767,8 @@ function arenafight(arena,pokemonplayer,rival){
     
     } 
   
+
+
 
 
 
@@ -802,9 +818,20 @@ class pokemon {
         freame("Arena Spring", null, true,alastor,charmander)
 
         //Aqui se va a mostrar la barra del enemigo y el jugador
+        
         barra_Salud(this.hp,rival.hp)
 
+         if(rival.hp <= 0){
+          alert("Felicidades!, Haz ganado la pelea.")
+          rival.hp = 50
+          correrMenu()  
+          springTown_views(false)
+        } 
+
       }
+        
+      
+            
 
       subir_nivel(){
       //aqui vamos a definir la logica para subir nivel
@@ -820,12 +847,14 @@ class pokemon {
 
 
 
+
+
 var charmander = new pokemon(
   "Charmander",
    "Fuego",
     5,
     0,
-    500,
+    100,
     52,
     43,
     65,
@@ -843,7 +872,6 @@ var alastor = new pokemon(
     66,
     ["Tornado", "Arañazo", "Malicioso", "Gruñido"]
 );
-
 
 
 window.addEventListener("keydown", (event) => {
