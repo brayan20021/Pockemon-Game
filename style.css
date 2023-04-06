@@ -38,6 +38,8 @@
     font-family: 'pokemon', sans-serif;
   }
 
+  /* ESTOS CSS CORRESPONDE A LA BARRA DE VIDA DEL RIVAL Y LA BARRA DE VIDA DEL JUGADOR/A */
+
   #enemy-life-bar {
     width: 200px;
     height: 20px;
@@ -107,6 +109,7 @@
     font-size: 14px;
   }
 
+ /*  CSS CORRESPONDERA AL MENU QUE SE VA A DESPLEGAR DURANTE LA PELEA DEL POKEMON */
   #menu {
 
     width: 200px;
@@ -131,21 +134,79 @@
 }
 
 .boton-juego {
-  background-color: #f44336; /* Fondo rojo */
-  border: none; /* Sin borde */
-  color: white; /* Texto blanco */
-  padding: 12px 24px; /* Espacio interno */
-  text-align: center; /* Centrar el texto */
-  text-decoration: none; /* Sin subrayado */
-  display: inline-block; /* Mostrar como bloque */
-  font-size: 16px; /* Tamaño de fuente */
-  margin: 4px 2px; /* Margen */
-  transition-duration: 0.4s; /* Duración de la transición */
-  cursor: pointer; /* Cursor de selección */
+  background-color: #f44336; 
+  border: none; 
+  color: white;
+  padding: 12px 24px; 
+  text-align: center; 
+  text-decoration: none; 
+  display: inline-block; 
+  font-size: 16px; 
+  margin: 4px 2px; 
+  transition-duration: 0.4s; 
+  cursor: pointer;
 }
 
 .boton-juego:hover {
-  background-color: white; /* Fondo blanco */
-  color: #f44336; /* Texto rojo */
-  border: 2px solid #f44336; /* Borde rojo */
+  background-color: white; 
+  color: #f44336; 
+  border: 2px solid #f44336; 
 }
+
+.pokemon-style {
+  background-color: rgba(255, 255, 255, 0.322);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  font-family: 'Pokemon', cursive;
+  font-weight: bold;
+  position: absolute;
+  z-index: 4;
+  text-align: center;
+  margin: auto;
+  margin-top: 50px;
+  margin-left: 250px;
+}
+
+/* CSS CORRESPONDE AL DISENO A LA HORA DE CREAR EL NOMBRE */
+.pokemon-style label {
+  font-size: 24px;
+  color: #000000;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.pokemon-style input[type="text"] {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #000000;
+  background-color: #ffffff;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.pokemon-style input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.pokemon-style button[type="button"] {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #030303;
+  font-family: 'Pokemon', cursive;
+  font-weight: bold;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pokemon-style button[type="button"]:hover {
+  background-color: #e50000;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+

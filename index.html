@@ -5,6 +5,13 @@
 <audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
 <audio id="pokemon-battle" src="audio/pokemonbattle.mp3"></audio>
 
+<div class="pokemon-style" id="addname">
+  <form>
+    <label for="name">Ingresa tu nombre:</label>
+    <input type="text" id="name" name="name" placeholder="Nombre obligatorio" required>
+  </form>
+  <button type="button" onclick="addname()">Continuar</button>
+</div>
 
 
 
@@ -128,6 +135,21 @@ function barra_Salud(player,rival){
 
   }
 
+function addname(){
+
+  playername = document.getElementById("name").value;
+
+    if(playername != ""){
+    document.getElementById("addname").style.display = "none";
+
+    } else {
+
+      alert("Hey espera!, ciudad paleta necesita saber tu nombre.");
+
+    }
+
+  }
+
 
 //Audios del juego
 
@@ -146,6 +168,10 @@ var startofplaceX;
 var startofplaceY;
 var direccion = 1;
 var combate = false;
+var playername = "";
+
+
+
 
 
 
@@ -207,18 +233,20 @@ var combate = false;
 canvas2.addEventListener("click", function(event) {
   var x = event.clientX - canvas2.offsetLeft;
   var y = event.clientY - canvas2.offsetTop;
-  
 
-  if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
-    map.clearRect(0, 0, canvas1.width, canvas1.height)
+if(playername){
 
-    springTown.draw();
-    intro.pause();
-    springtown_audio.play()
+      if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
+        map.clearRect(0, 0, canvas1.width, canvas1.height)
+
+        springTown.draw();
+        intro.pause();
+        springtown_audio.play()
 
 
-    mover(650, 280, 1);
-  }
+        mover(650, 280, 1);
+      }
+    }
 });
             
 
@@ -306,9 +334,15 @@ routeImage,
                 }
 
                 players.clearRect(0, 0, canvas1.width, canvas1.height)
-                players.drawImage(myImage, x, y, 50, 50);                
-                players.font = 'bold 20px arial';
-                players.fillText(this.name, this.x , this.y);
+                players.drawImage(myImage, x, y, 50, 50);
+                
+                players.shadowOffsetX = 3;
+                players.shadowOffsetY = 3;
+                players.shadowBlur = 4;
+                players.shadowColor = "rgba(1, 1, 3, 0.8)"; 
+                players.font = 'bold 25px arial';
+                players.fillStyle = "white"
+                players.fillText(playername, this.x -10 , this.y -5);
                 console.log("COORDENADA X (" + firstplayer.x + ") Y (" + firstplayer.y + ")");
            // } 
           }
@@ -646,6 +680,7 @@ function springTown_views(inicio = true){
       springTown.draw();
       freame("Pueblo Paleta", "img/freame/1.png")
       natural.pause();
+      pokemon_battle.pause()
       springtown_audio.play()
       mover(startofplaceX, startofplaceY, globalvar);
       
@@ -874,67 +909,75 @@ var alastor = new pokemon(
 );
 
 
+//Variables para los pokemones 
+
+current_player = alastor; //Tambien depende el pokemon que seleccione el jugador
+current_enemy  = charmander; //Aqui se volvera dinamico para cambiar
+
+
 window.addEventListener("keydown", (event) => {
     //CAPTURA DE COORDENADAS
-    switch(event.key){
-      case 'ArrowUp':
-        direccion = 2;
+    if(playername){
+      switch(event.key){
+        case 'ArrowUp':
+          direccion = 2;
 
-          if(startofplaceY > 0){
-            
-            startofplaceY -= 10; // Mover hacia arriba
-            
-            //umbrales
-            if (globalvar === 1 && startofplaceX < 210 && startofplaceY > 180) {startofplaceY += 10;}
-            
-            walking.play()
-
-            }
-
-            break;
-
-      case 'ArrowDown':
-          direccion = 4;
-              if(startofplaceY < 550){
-                
-                startofplaceY += 10; // Mover hacia abajo
-                walking.play()
+            if(startofplaceY > 0){
               
-                } 
-            break;
-
-      case 'ArrowLeft':
-          direccion = 1;
-
-              if(startofplaceX > 0){
-
-                startofplaceX -= 10; // Mover hacia la izquierda
-                walking.play()
-
-                }
-
-        break;
-
-        
-      case 'ArrowRight':
-          direccion = 3;
-
-              if(startofplaceX < 760){
-
-                startofplaceX += 10; // Mover hacia la derecha
-                walking.play()
+              startofplaceY -= 10; // Mover hacia arriba
               
+              //umbrales
+              if (globalvar === 1 && startofplaceX < 210 && startofplaceY > 180) {startofplaceY += 10;}
+              
+              walking.play()
+
               }
-        break;
 
-      default:
+              break;
 
-        break;
+        case 'ArrowDown':
+            direccion = 4;
+                if(startofplaceY < 550){
+                  
+                  startofplaceY += 10; // Mover hacia abajo
+                  walking.play()
+                
+                  } 
+              break;
 
-  }
-     
+        case 'ArrowLeft':
+            direccion = 1;
 
-     mover(startofplaceX, startofplaceY, globalvar);
+                if(startofplaceX > 0){
+
+                  startofplaceX -= 10; // Mover hacia la izquierda
+                  walking.play()
+
+                  }
+
+          break;
+
+          
+        case 'ArrowRight':
+            direccion = 3;
+
+                if(startofplaceX < 760){
+
+                  startofplaceX += 10; // Mover hacia la derecha
+                  walking.play()
+                
+                }
+          break;
+
+        default:
+
+          break;
+
+    }
+      
+
+      mover(startofplaceX, startofplaceY, globalvar);
+  }       
     //players.clearRect(0, 0, canvas1.width, canvas1.height);
 
     if (globalvar === 1){
@@ -974,7 +1017,7 @@ window.addEventListener("keydown", (event) => {
                       globalvar = 21;
                       combate = true;
                       arenafight(arena_forest,alastor_pk,charmander_pk)
-                      freame("Arena Spring", "img/freame/freamepoke.png", true,alastor,charmander)
+                      freame("Arena Spring", "img/freame/freamepoke.png", true,current_player,current_enemy)
                       barra_Salud("Salud", "Rival")
                       mostrarMenu()
                       //(name, img, fights,framePlayer,frameRival)
@@ -1051,7 +1094,7 @@ window.addEventListener("keydown", (event) => {
 
 
   });
- 
+
 </script>
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="messages.js"></script>
