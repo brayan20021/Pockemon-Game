@@ -67,7 +67,15 @@
 <canvas id="canvas3"></canvas>
 </div>
 
+<div id="dialog-box">
+  <p id="dialog-text"></p>
+  <button id="dialog-button">Continuar</button>
+</div>
+
 <script>
+
+
+showDialog("¡Hola! PAPOTE al mundo de Pokémon. ¿Cómo te llamas?");
 
   // const miAudio = document.getElementById("mi-audio");
   //miAudio.play();
@@ -113,14 +121,6 @@ function barra_Salud(player,rival){
     barraVidaplayer.style.transition ="none"
     barraVidaenemy.style.display = "none";
     barraVidaplayer.style.display = "none";
-
-
-    //map.clearRect(0, 0, canvas1.width, canvas1.height)
-    //players.clearRect(0, 0, canvas2.width, canvas2.height);
-
-/*     springTown.draw();
-    intro.pause();
-    springtown_audio.play() */
     
     springTown_views()
     combate = false;
@@ -144,11 +144,37 @@ function addname(){
 
     } else {
 
-      alert("Hey espera!, ciudad paleta necesita saber tu nombre.");
+      showDialog("Hey espera chico/a, Ciudad paleta necesita saber tu nombre.")
 
     }
 
   }
+
+  //Funcion va a corresponder a los dialogos de los personajes
+
+  function showDialog(text) {
+  const dialogBox = document.getElementById("dialog-box");
+  const dialogText = document.getElementById("dialog-text");
+  const dialogButton = document.getElementById("dialog-button");
+
+  dialogText.innerHTML = "";
+  dialogBox.style.display = "block";
+
+  let i = 0;
+  const typing = setInterval(function() {
+    if (i < text.length) {
+      dialogText.innerHTML += text.charAt(i);
+      i++;
+    } else {
+      clearInterval(typing);
+    }
+  }, 50);
+
+  dialogButton.onclick = function() {
+    dialogBox.style.display = "none";
+  }
+
+}
 
 
 //Audios del juego
@@ -169,11 +195,7 @@ var startofplaceY;
 var direccion = 1;
 var combate = false;
 var playername = "";
-
-
-
-
-
+var entradaJugador = 0;
 
   //INICIALIZACION DE CAPAS
   var canvas1 = document.getElementById("canvas1");
@@ -189,7 +211,7 @@ var playername = "";
   canvas1.width = 800;
   canvas1.height = 600;
 
-  canvas2.setAttribute("style", "z-index: 10000; position:relative;");
+  canvas2.setAttribute("style", "z-index: 10; position:relative;");
   canvas2.width = 800;
   canvas2.height = 600;
 
@@ -235,7 +257,7 @@ canvas2.addEventListener("click", function(event) {
   var y = event.clientY - canvas2.offsetTop;
 
 if(playername){
-
+    if(entradaJugador ===0){
       if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
         map.clearRect(0, 0, canvas1.width, canvas1.height)
 
@@ -245,8 +267,10 @@ if(playername){
 
 
         mover(650, 280, 1);
+        entradaJugador = 1;
       }
     }
+  }
 });
             
 
