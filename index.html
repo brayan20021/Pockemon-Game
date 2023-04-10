@@ -217,6 +217,7 @@ var startofplaceY;
 var direccion = 1;
 var combate = false;
 var playername = "";
+var pokemonG_player = Array(2) //Ahi es donde se va a almasenar el pokemon actual del jugador
 var entradaJugador = 0; //VARIABLE QUE OBLIGA AL JUGADOR HACER UNA COSA A LA VEZ EN LA INTRO
 var conversacionMostrada = false; //NO UTILIZADA TODAVIA
 var is_talking = false; //para que cuando el personaje converse no se mueva
@@ -660,14 +661,14 @@ teacher.draw()
 
 // Aqui estaremos definiendo los pokemones
 
-var charmander_image;
+var optimus_image;
 var myVar;
 
-function charmander_pk(x,y){
+function optimus_pk(x,y){
   
- charmander_image = pokemones({
+   optimus_image = pokemones({
 
-  pokemonname        : "charmander",
+  pokemonname        : "optimus",
   x                  : x,
   y                  : y,
   pokemonrouteImage  : "img/pokemons/optimus.png",
@@ -677,21 +678,25 @@ function charmander_pk(x,y){
 
 if (ataq) {
 
-    myVar = setTimeout(function () {
-      
-      ataq = false; alastor.atacar(charmander)
-    
-    }, 800);
-      }
-       else {
+myVar = setTimeout(function () {
+  
+  ataq = false; pokemonG_player[0].atacar(optimus)
 
-          clearTimeout(myVar);
-          charmander_image.draw();
+}, 800);
+  }
+   else {
 
-        ataq = false;
+      clearTimeout(myVar);
+      optimus_image.draw();
 
-        }
+    ataq = false;
+
 }
+
+}
+
+
+
 
 var alastor_image;
 
@@ -708,6 +713,60 @@ function alastor_pk(x,y){
 });
 
 alastor_image.draw()
+
+}
+
+var balsaur_image;
+
+function balsaur_pk(x,y){
+  
+  balsaur_image = pokemones({
+
+  pokemonname        : "balsaur",
+  x                  : x,
+  y                  : y,
+  pokemonrouteImage  : "img/pokemons/balsaur.png",
+  tipo               : 1
+
+});
+
+balsaur_image.draw()
+
+}
+
+var squirtle_image;
+
+function squirtle_pk(x,y){
+  
+  squirtle_image = pokemones({
+
+  pokemonname        : "squirtle",
+  x                  : x,
+  y                  : y,
+  pokemonrouteImage  : "img/pokemons/squirtle.png",
+  tipo               : 1
+
+});
+
+squirtle_image.draw()
+
+}
+
+var charmander_image;
+
+function charmander_pk(x,y){
+  
+  charmander_image = pokemones({
+
+  pokemonname        : "charmander",
+  x                  : x,
+  y                  : y,
+  pokemonrouteImage  : "img/pokemons/charmander.png",
+  tipo               : 1
+
+});
+
+charmander_image.draw()
 
 }
 
@@ -953,10 +1012,10 @@ class pokemon {
 
 
 
+//Aqui se va a crear los pokemones para pelear, llamara la clase pokemon (no imagen)
 
-
-var charmander = new pokemon(
-  "Charmander",
+var optimus= new pokemon(
+  "optimus",
    "Fuego",
     5,
     0,
@@ -977,6 +1036,42 @@ var alastor = new pokemon(
     41,
     66,
     ["Tornado", "Arañazo", "Malicioso", "Gruñido"]
+);
+
+var charmander = new pokemon(
+  "Charmander",
+  "Fuego",
+    6,
+    0, 
+    50,
+    60,
+    36,
+    56,
+    ["Llama", "Flecha", "Malicioso", "Gruñido"]
+);
+
+var squirtle = new pokemon(
+  "Squirtle",
+  "Hierba",
+    5,
+    0, 
+    55,
+    62,
+    26,
+    56,
+    ["Hercules", "Zumbido", "Malicioso", "Gruñido"]
+);
+
+var balsaur= new pokemon(
+  "Balsaur",
+  "Hierba",
+    5,
+    0, 
+    45,
+    52,
+    26,
+    56,
+    ["Hercules", "Zumbido", "Malicioso", "Gruñido"]
 );
 
 
@@ -1090,8 +1185,8 @@ window.addEventListener("keydown", (event) => {
                     if(changeworld){
                       globalvar = 21;
                       combate = true;
-                      arenafight(arena_forest,alastor_pk,charmander_pk)
-                      freame("Arena Spring", "img/freame/freamepoke.png", true,current_player,current_enemy)
+                      arenafight(arena_forest,pokemonG_player[1],optimus_pk)
+                      freame("Arena Spring", "img/freame/freamepoke.png", true,pokemonG_player[1],optimus)
                       barra_Salud("Salud", "Rival")
                       mostrarMenu()
                       //(name, img, fights,framePlayer,frameRival)
@@ -1192,12 +1287,17 @@ window.addEventListener("keydown", (event) => {
 
                     if (x >= 0 && x <= 270 && y >= 100 && y <= 450) {
                         alert("hola1")
+                        pokemonG_player = [balsaur,balsaur_pk]
+                        springTown_views()
                       } else if (x >= 280 && x <= 530 && y >= 100 && y <= 450){
                         alert("hola2")
+                        pokemonG_player = [squirtle,squirtle_pk]
+                        springTown_views()
                       } else if (x >= 540 && x <= 760 && y >= 100 && y <= 450){
                         alert("hola3")
+                        pokemonG_player = [charmander,charmander_pk]
+                        springTown_views()
                       }
-
                     });
                   }
               }
