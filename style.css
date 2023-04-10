@@ -161,19 +161,23 @@
   font-family: 'Pokemon', cursive;
   font-weight: bold;
   position: absolute;
-  z-index: 4;
+  z-index: 11;
   text-align: center;
   margin: auto;
-  margin-top: 50px;
-  margin-left: 250px;
+  margin-top: 250px;
+  margin-left: 730px;
+  height: 200px;
+  width: 500px;
 }
 
 /* CSS CORRESPONDE AL DISENO A LA HORA DE CREAR EL NOMBRE */
 .pokemon-style label {
   font-size: 24px;
-  color: #000000;
+  color: #4400ff;
   display: block;
   margin-bottom: 10px;
+  margin-left: 30px;
+  text-align: center;
 }
 
 .pokemon-style input[type="text"] {
@@ -185,6 +189,7 @@
   background-color: #ffffff;
   width: 100%;
   margin-bottom: 20px;
+  
 }
 
 .pokemon-style input[type="text"]:focus {
@@ -217,7 +222,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  margin-bottom: 600px;
+  margin-bottom: 150px;
   margin-left: 730px;
   width: 90%;
   max-width: 500px;

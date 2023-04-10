@@ -4,6 +4,7 @@
 <audio id="springtown" src="audio/springtown.mp3"></audio>
 <audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
 <audio id="pokemon-battle" src="audio/pokemonbattle.mp3"></audio>
+<audio id="selectpokemon" src="audio/selectpokemon.mp3"></audio>
 
 <div class="pokemon-style" id="addname">
   <form>
@@ -72,10 +73,11 @@
   <button id="dialog-button">Continuar</button>
 </div>
 
+
 <script>
 
 
-showDialog("¡Hola! PAPOTE al mundo de Pokémon. ¿Cómo te llamas?");
+
 
   // const miAudio = document.getElementById("mi-audio");
   //miAudio.play();
@@ -152,30 +154,49 @@ function addname(){
 
   //Funcion va a corresponder a los dialogos de los personajes
 
-  function showDialog(text) {
-  const dialogBox = document.getElementById("dialog-box");
-  const dialogText = document.getElementById("dialog-text");
-  const dialogButton = document.getElementById("dialog-button");
+  function showDialog(messages) {
+  if (is_talking === false) {
+    const dialogBox = document.getElementById("dialog-box");
+    const dialogText = document.getElementById("dialog-text");
+    const dialogButton = document.getElementById("dialog-button");
+    is_talking = true;
 
-  dialogText.innerHTML = "";
-  dialogBox.style.display = "block";
+    dialogText.innerHTML = "";
+    dialogBox.style.display = "block";
+    let i = 0;
 
-  let i = 0;
-  const typing = setInterval(function() {
-    if (i < text.length) {
-      dialogText.innerHTML += text.charAt(i);
-      i++;
-    } else {
-      clearInterval(typing);
+    const typing = setInterval(function() {
+      if (i < messages[0].length) {
+        dialogText.innerHTML += messages[0].charAt(i);
+        i++;
+      } else {
+
+        clearInterval(typing);
+
+      }
+
+    }, 50);
+
+    dialogButton.onclick = function() {
+      if (messages.length > 1) {
+        i = 0;
+        messages.shift();
+        dialogText.innerHTML = "";
+        const nextTyping = setInterval(function() {
+          if (i < messages[0].length) {
+            dialogText.innerHTML += messages[0].charAt(i);
+            i++;
+          } else {
+            clearInterval(nextTyping);
+          }
+        }, 50);
+      } else {
+        dialogBox.style.display = "none";
+        is_talking = false;
+      }
     }
-  }, 50);
-
-  dialogButton.onclick = function() {
-    dialogBox.style.display = "none";
   }
-
 }
-
 
 //Audios del juego
 
@@ -187,6 +208,7 @@ var natural = document.getElementById('natural');
 var springtown_audio = document.getElementById('springtown');
 var naturalnight = document.getElementById('naturalnight');
 var pokemon_battle = document.getElementById("pokemon-battle");
+var selectpokemon_audio = document.getElementById("selectpokemon");
 
 //INTERACCION CON EL PERSONAJE
 var globalvar = 1;
@@ -195,7 +217,9 @@ var startofplaceY;
 var direccion = 1;
 var combate = false;
 var playername = "";
-var entradaJugador = 0;
+var entradaJugador = 0; //VARIABLE QUE OBLIGA AL JUGADOR HACER UNA COSA A LA VEZ EN LA INTRO
+var conversacionMostrada = false; //NO UTILIZADA TODAVIA
+var is_talking = false; //para que cuando el personaje converse no se mueva
 
   //INICIALIZACION DE CAPAS
   var canvas1 = document.getElementById("canvas1");
@@ -257,7 +281,8 @@ canvas2.addEventListener("click", function(event) {
   var y = event.clientY - canvas2.offsetTop;
 
 if(playername){
-    if(entradaJugador ===0){
+
+    if(entradaJugador === 0){
       if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
         map.clearRect(0, 0, canvas1.width, canvas1.height)
 
@@ -420,6 +445,7 @@ tipo,
                   //Aqui vamos a limpiar el otro personaje
 
                 }
+                
             
                 players.drawImage(pokemonmyImage, x, y, 300, 300);                
                 //map.font = 'bold 20px';
@@ -552,6 +578,15 @@ const shadowVille = city({
   with            : 0,
   height          : 0,
   routeImage      : "img/shadowville.png",
+
+});
+
+const selectPokemon = city({
+
+name            : 'SelectPokemon',
+with            : 0,
+height          : 0,
+routeImage      : "img/startpokemon.png",
 
 });
 
@@ -702,10 +737,10 @@ function springTown_views(inicio = true){
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
       springTown.draw();
-      freame("Pueblo Paleta", "img/freame/1.png")
+      freame("Pueblo Paleta", "img/freame/1.png");
       natural.pause();
-      pokemon_battle.pause()
-      springtown_audio.play()
+      pokemon_battle.pause();
+      springtown_audio.play();
       mover(startofplaceX, startofplaceY, globalvar);
       
 }
@@ -763,6 +798,18 @@ function houseTeacher_views(){
       houseTeacher.draw();
       mover(startofplaceX, startofplaceY, globalvar);
       teachernps(15,130)
+
+}
+
+function selectPokemon_views(){
+
+globalvar = 99;
+map.clearRect(0, 0, canvas1.width, canvas1.height);
+players.clearRect(0, 0, canvas2.width, canvas2.height);
+springtown_audio.pause()
+selectpokemon_audio.play()
+selectPokemon.draw()
+mover(startofplaceX, startofplaceY, globalvar);
 
 }
 
@@ -938,6 +985,7 @@ var alastor = new pokemon(
 current_player = alastor; //Tambien depende el pokemon que seleccione el jugador
 current_enemy  = charmander; //Aqui se volvera dinamico para cambiar
 
+if(is_talking === false){
 
 window.addEventListener("keydown", (event) => {
     //CAPTURA DE COORDENADAS
@@ -999,9 +1047,11 @@ window.addEventListener("keydown", (event) => {
 
     }
       
-
+      if(entradaJugador === 1){
       mover(startofplaceX, startofplaceY, globalvar);
-  }       
+    }
+  } 
+        
     //players.clearRect(0, 0, canvas1.width, canvas1.height);
 
     if (globalvar === 1){
@@ -1089,6 +1139,16 @@ window.addEventListener("keydown", (event) => {
 
     if (globalvar === 10){
 
+                  //conversaciones
+                  if(startofplaceY > 290 && startofplaceY < 350 && startofplaceX < 240){
+
+
+
+                      showDialog(conversacionMadre.parrafo1)
+
+
+                  }
+
               if (startofplaceX > 330 && startofplaceX < 410 && startofplaceY > 540){
 
                 changeworld = confirm("¿Estas seguro que deseas salir de casa?")
@@ -1103,7 +1163,7 @@ window.addEventListener("keydown", (event) => {
     if (globalvar === 11){
 
               if (startofplaceY > 520 && startofplaceY < 550 && startofplaceX > 190 && startofplaceX < 240){
-
+  
                   changeworld = confirm("¿Desea salir del laboratorio?")
                     if(changeworld){
 
@@ -1111,14 +1171,39 @@ window.addEventListener("keydown", (event) => {
 
                     }
               }
+              
+              if(startofplaceX > 0 && startofplaceX < 170 && startofplaceY < 180 && startofplaceY > 90){
+
+                showDialog(oak_conversation.parrafo1)
+              }
+
+
         }
 
-    
-    
+        if(startofplaceY < 30){
+                changeworld = confirm("¿Entrar?")
+                  if(changeworld){
+                    selectPokemon_views()
 
+                    //Aqui es donde se va a seleccionar los pokemones
+                    canvas2.addEventListener("click", function(event) {
+                      var x = event.clientX - canvas2.offsetLeft;
+                      var y = event.clientY - canvas2.offsetTop;
 
+                    if (x >= 0 && x <= 270 && y >= 100 && y <= 450) {
+                        alert("hola1")
+                      } else if (x >= 280 && x <= 530 && y >= 100 && y <= 450){
+                        alert("hola2")
+                      } else if (x >= 540 && x <= 760 && y >= 100 && y <= 450){
+                        alert("hola3")
+                      }
+
+                    });
+                  }
+              }
   });
-
+}
 </script>
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="messages.js"></script>
+<script src="test.js"></script>
