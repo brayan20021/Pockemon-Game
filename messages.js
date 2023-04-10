@@ -22,12 +22,12 @@ parrafo1: [
 
 const systemNotification = {
 
-    parrafo1: [
+parrafo1: [
+
+"¡Hey espera! Ciudad Paleta necesita saber tu nombre",
+"Antes de que comiences, déjame decirte que necesitas un compañero para acompañarte en tu viaje.",
+"Puedes escoger entre Bulbasaur, Charmander y Squirtle. ¿Cuál te gustaría tener como tu primer Pokémon?",
+
+]
     
-    "¡Bienvenido/a! ¿Estás listo/a para empezar tu aventura en el mundo de Pokémon?",
-    "Antes de que comiences, déjame decirte que necesitas un compañero para acompañarte en tu viaje.",
-    "Puedes escoger entre Bulbasaur, Charmander y Squirtle. ¿Cuál te gustaría tener como tu primer Pokémon?",
-    
-    ]
-    
-    };
+};

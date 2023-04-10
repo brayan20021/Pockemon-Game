@@ -146,7 +146,7 @@ function addname(){
 
     } else {
 
-      showDialog("Hey espera chico/a, Ciudad paleta necesita saber tu nombre.")
+      showDialog(["Hey espera chico/a, Ciudad paleta necesita saber tu nombre"])
 
     }
 
@@ -177,19 +177,21 @@ function addname(){
 
     }, 50);
 
-    dialogButton.onclick = function() {
+  dialogButton.onclick = function() {
       if (messages.length > 1) {
         i = 0;
-        messages.shift();
-        dialogText.innerHTML = "";
-        const nextTyping = setInterval(function() {
-          if (i < messages[0].length) {
-            dialogText.innerHTML += messages[0].charAt(i);
-            i++;
-          } else {
-            clearInterval(nextTyping);
-          }
-        }, 50);
+          messages.shift();
+            dialogText.innerHTML = "";
+            const nextTyping = setInterval(function() {
+
+            if (i < messages[0].length) {
+              dialogText.innerHTML += messages[0].charAt(i);
+              i++;
+            } else {
+              clearInterval(nextTyping);
+            }
+          }, 50);
+
       } else {
         dialogBox.style.display = "none";
         is_talking = false;
@@ -652,7 +654,7 @@ teacher = nps({
   x               : x,
   y               : y,
   speed           : 5,
-  npsrouteImage   : "img/nps/teacherleft1.png"
+  npsrouteImage   : "img/nps/teacherdown1.png"
 
 });
 teacher.draw()
@@ -852,11 +854,11 @@ function house1_Views(){
 function houseTeacher_views(){
       
       globalvar = 11;
-      players.clearRect(0, 0, canvas1.width, canvas1.height);
+      map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       houseTeacher.draw();
       mover(startofplaceX, startofplaceY, globalvar);
-      teachernps(15,130)
+      teachernps(240,100)
 
 }
 
@@ -868,7 +870,6 @@ players.clearRect(0, 0, canvas2.width, canvas2.height);
 springtown_audio.pause()
 selectpokemon_audio.play()
 selectPokemon.draw()
-mover(startofplaceX, startofplaceY, globalvar);
 
 }
 
@@ -884,6 +885,7 @@ function arenafight(arena,pokemonplayer,rival){
         globalvar = 21;
         pokemon_battle.play()
         springtown_audio.pause()
+        selectpokemon_audio.pause()
         map.clearRect(0, 0, canvas1.width, canvas1.height);
         players.clearRect(0, 0, canvas2.width, canvas2.height);
 
@@ -1229,7 +1231,6 @@ window.addEventListener("keydown", (event) => {
 
                     }
               }
-
       }
 
     if (globalvar === 10){
@@ -1269,16 +1270,9 @@ window.addEventListener("keydown", (event) => {
               
               if(startofplaceX > 0 && startofplaceX < 170 && startofplaceY < 180 && startofplaceY > 90){
 
-                showDialog(oak_conversation.parrafo1)
-              }
-
-
-        }
-
-        if(startofplaceY < 30){
-                changeworld = confirm("¿Entrar?")
-                  if(changeworld){
-                    selectPokemon_views()
+                if(!pokemonG_player[0]){
+                
+                  selectPokemon_views()
 
                     //Aqui es donde se va a seleccionar los pokemones
                     canvas2.addEventListener("click", function(event) {
@@ -1286,21 +1280,34 @@ window.addEventListener("keydown", (event) => {
                       var y = event.clientY - canvas2.offsetTop;
 
                     if (x >= 0 && x <= 270 && y >= 100 && y <= 450) {
-                        alert("hola1")
                         pokemonG_player = [balsaur,balsaur_pk]
-                        springTown_views()
+                        houseTeacher_views()
+                        showDialog(["Felicidades! haz obtenido tu pokemon, su nombre es Balsaur, cuidalo mucho, ve y disfruta tu aventura"])
+
                       } else if (x >= 280 && x <= 530 && y >= 100 && y <= 450){
-                        alert("hola2")
                         pokemonG_player = [squirtle,squirtle_pk]
-                        springTown_views()
+                        houseTeacher_views()
+                        showDialog(["Felicidades! haz obtenido tu pokemon, su nombre es Squirtle, cuidalo mucho, ve y disfruta tu aventura"])
+
                       } else if (x >= 540 && x <= 760 && y >= 100 && y <= 450){
-                        alert("hola3")
                         pokemonG_player = [charmander,charmander_pk]
-                        springTown_views()
+                        houseTeacher_views()
+                        showDialog(["Felicidades! haz obtenido tu pokemon, su nombre es Charmander, cuidalo mucho, ve y disfruta tu aventura"])
+                        
                       }
                     });
-                  }
+
+                }
               }
+
+              if(startofplaceX > 210 && startofplaceX < 280 && startofplaceY <= 160){
+                showDialog(oak_conversation.parrafo1)
+              }
+
+
+
+        }
+
   });
 }
 </script>
