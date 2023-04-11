@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon Atrapalo ya</title>
+  <link rel="shortcut icon" href="/img/favicon.png" type="image/png">
+</head>
+
 <audio id="intro" src="audio/pockemonaudio.mp3"></audio>
 <audio id="walking" src="audio/walking.mp3"></audio>
 <audio id="natural" src="audio/natural.mp3"></audio>
@@ -5,6 +15,7 @@
 <audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
 <audio id="pokemon-battle" src="audio/pokemonbattle.mp3"></audio>
 <audio id="selectpokemon" src="audio/selectpokemon.mp3"></audio>
+
 
 <div class="pokemon-style" id="addname">
   <form>
@@ -72,6 +83,8 @@
   <p id="dialog-text"></p>
   <button id="dialog-button">Continuar</button>
 </div>
+
+<div class="circle"></div>
 
 
 <script>
@@ -200,6 +213,12 @@ function addname(){
   }
 }
 
+function circularEffect() {
+  const circle = document.createElement('div');
+  circle.classList.add('circular-effect');
+  document.body.appendChild(circle);
+}
+
 //Audios del juego
 
 var intro = document.getElementById("intro")
@@ -222,7 +241,9 @@ var playername = "";
 var pokemonG_player = Array(2) //Ahi es donde se va a almasenar el pokemon actual del jugador
 var entradaJugador = 0; //VARIABLE QUE OBLIGA AL JUGADOR HACER UNA COSA A LA VEZ EN LA INTRO
 var conversacionMostrada = false; //NO UTILIZADA TODAVIA
-var is_talking = false; //para que cuando el personaje converse no se mueva
+var is_talking = false; //Para que cuando el personaje converse no se mueva
+var primerPokemon = false; //Variable te permite seleccionar tu primer pokemon una sola vez, corrige error.
+var pelea;
 
   //INICIALIZACION DE CAPAS
   var canvas1 = document.getElementById("canvas1");
@@ -266,6 +287,7 @@ var is_talking = false; //para que cuando el personaje converse no se mueva
     map.fillText('1.- J U E G O    N U E V O', 180, 500);
     map.fillText('2 -  S A L I R', 180, 550);
   }); 
+  circularEffect()
 
   //DIFINCION DE ELEMENTOS DINAMICOS
   var myImage = new Image();
@@ -552,7 +574,7 @@ const houseTeacher = city({
   name            : 'teacherHouse',
   with            : 0,
   height          : 0,
-  routeImage      : "img/house/house_teacher.png",
+  routeImage      : "img/house/house_teacher2.png",
 
 });
 
@@ -882,12 +904,15 @@ function arenafight(arena,pokemonplayer,rival){
         let z = 0
         let f = 300
         moving = true
+        combate = true;
         globalvar = 21;
         pokemon_battle.play()
         springtown_audio.pause()
         selectpokemon_audio.pause()
         map.clearRect(0, 0, canvas1.width, canvas1.height);
         players.clearRect(0, 0, canvas2.width, canvas2.height);
+        barra_Salud("Salud", "Rival")
+        mostrarMenu()
 
         //Aqui es donde se dibujara el fondo de la arena, es dinamico.
         arena.draw() 
@@ -901,7 +926,7 @@ function arenafight(arena,pokemonplayer,rival){
           pokemonplayer(130, f)
         
 
-        if(moving){
+      if(moving){
           z++
             f--
                 if(z === 100){moving = false}
@@ -910,7 +935,6 @@ function arenafight(arena,pokemonplayer,rival){
               z--
                 f++
                     if(z <= 0){moving = true}
-
                 }
 
         } else {
@@ -1155,13 +1179,13 @@ window.addEventListener("keydown", (event) => {
 
               if (startofplaceX === 0){
 
-                changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
-                    if(changeworld){
+                //changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
+                    //if(changeworld){
                       
                       palletTown_views()
                       //map.reset();
                     // players.reset();
-                    }
+                   // }
               }
 
               if (startofplaceX > 430 && startofplaceX < 470 && startofplaceY > 420 && startofplaceY < 450){
@@ -1185,13 +1209,9 @@ window.addEventListener("keydown", (event) => {
               if(startofplaceX === 760){
                   changeworld = confirm("Vas a entrar a la sala de pelea como prueba")
                     if(changeworld){
-                      globalvar = 21;
-                      combate = true;
+
                       arenafight(arena_forest,pokemonG_player[1],optimus_pk)
                       freame("Arena Spring", "img/freame/freamepoke.png", true,pokemonG_player[1],optimus)
-                      barra_Salud("Salud", "Rival")
-                      mostrarMenu()
-                      //(name, img, fights,framePlayer,frameRival)
                       
                     }
               }
@@ -1217,6 +1237,13 @@ window.addEventListener("keydown", (event) => {
                        shadowVille_views();
 
                       }
+              }
+              
+              if(startofplaceX === 650 && startofplaceX > 70 && startofplaceY < 270){
+                  
+                  showDialog(["Un pokemon te ha encontrado!, tienes que luchar para defenderte"])
+                  
+                  
               }
         }
 
@@ -1268,49 +1295,53 @@ window.addEventListener("keydown", (event) => {
                     }
               }
               
-              if(startofplaceX > 0 && startofplaceX < 170 && startofplaceY < 180 && startofplaceY > 90){
+            if(startofplaceX > 0 && startofplaceX < 170 && startofplaceY < 180 && startofplaceY > 90){
 
-                if(!pokemonG_player[0]){
+              if(primerPokemon === false){
+
+                selectPokemon_views()
+                canvas2.addEventListener("click", function(event) {
+                var x = event.clientX - canvas2.offsetLeft;
+                var y = event.clientY - canvas2.offsetTop;
                 
-                  selectPokemon_views()
+                  if(!pokemonG_player[0]){
 
-                    //Aqui es donde se va a seleccionar los pokemones
-                    canvas2.addEventListener("click", function(event) {
-                      var x = event.clientX - canvas2.offsetLeft;
-                      var y = event.clientY - canvas2.offsetTop;
+                      //Aqui es donde se va a seleccionar los pokemones
+                      if (x >= 0 && x <= 270 && y >= 100 && y <= 450) {
 
-                    if (x >= 0 && x <= 270 && y >= 100 && y <= 450) {
-                        pokemonG_player = [balsaur,balsaur_pk]
+                          pokemonG_player = [balsaur,balsaur_pk]
+                          showDialog([`Felicidades! ${playername} haz obtenido tu pokemon,
+                           su nombre es Balsaur, cuidalo mucho, ve y disfruta tu aventura`])
+                          
+                        } else if (x >= 280 && x <= 530 && y >= 100 && y <= 450){
+
+                          pokemonG_player = [squirtle,squirtle_pk]
+                          showDialog([`Felicidades! ${playername} haz obtenido tu pokemon,
+                           nombre es Squirtle, cuidalo mucho, ve y disfruta tu aventura`])
+
+                        } else if (x >= 540 && x <= 760 && y >= 100 && y <= 450){
+                          
+                          pokemonG_player = [charmander,charmander_pk]
+                          showDialog([`Felicidades! ${playername} haz obtenido tu pokemon,
+                          su nombre es Charmander, cuidalo mucho, ve y disfruta tu aventura`])
+                          
+                        }
                         houseTeacher_views()
-                        showDialog(["Felicidades! haz obtenido tu pokemon, su nombre es Balsaur, cuidalo mucho, ve y disfruta tu aventura"])
-
-                      } else if (x >= 280 && x <= 530 && y >= 100 && y <= 450){
-                        pokemonG_player = [squirtle,squirtle_pk]
-                        houseTeacher_views()
-                        showDialog(["Felicidades! haz obtenido tu pokemon, su nombre es Squirtle, cuidalo mucho, ve y disfruta tu aventura"])
-
-                      } else if (x >= 540 && x <= 760 && y >= 100 && y <= 450){
-                        pokemonG_player = [charmander,charmander_pk]
-                        houseTeacher_views()
-                        showDialog(["Felicidades! haz obtenido tu pokemon, su nombre es Charmander, cuidalo mucho, ve y disfruta tu aventura"])
-                        
-                      }
-                    });
-
-                }
+                        primerPokemon = true;
+                    }
+                });
               }
+          }
 
-              if(startofplaceX > 210 && startofplaceX < 280 && startofplaceY <= 160){
+          if(startofplaceX > 210 && startofplaceX < 280 && startofplaceY <= 160){
                 showDialog(oak_conversation.parrafo1)
-              }
-
-
-
-        }
-
+            }
+      }
   });
+  
 }
 </script>
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="messages.js"></script>
 <script src="test.js"></script>
+</html>

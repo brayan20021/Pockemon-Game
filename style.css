@@ -260,3 +260,21 @@
   background-color: #900;
 }
 
+.circular-effect {
+  position: fixed;
+  top: 0;
+  left: 600px;
+  width: 800px;
+  height: 600px;
+  background-color: rgb(0, 0, 0);
+  border-radius: 100%;
+  transform: scale(0);
+  opacity: 8;
+  transition: transform 2s ease-in, opacity 5s ease-in;
+  z-index: 9999;
+}
+
+.circular-effect.active {
+  transform: scale(1);
+  opacity: 1;
+}

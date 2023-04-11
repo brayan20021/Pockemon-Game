@@ -1,4 +1,4 @@
-let primer_pokemon = 0;
+let primer_pokemon = false;
 let seleccionPokemon;
 
 const pokemon_select = ({name = 'Principal', x = null, y = null, width = null, height = null, routeImage = null}) => ({
@@ -30,4 +30,8 @@ const pokemon_select = ({name = 'Principal', x = null, y = null, width = null, h
                   }
      
     })
+    
+
+    //Aqui se va a tratar de la historia que les vamos a agregar al juego
+
     
