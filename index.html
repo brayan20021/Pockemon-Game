@@ -8,6 +8,7 @@
   <link rel="shortcut icon" href="/img/favicon.png" type="image/png">
 </head>
 
+
 <audio id="intro" src="audio/pockemonaudio.mp3"></audio>
 <audio id="walking" src="audio/walking.mp3"></audio>
 <audio id="natural" src="audio/natural.mp3"></audio>
@@ -86,9 +87,34 @@
 
 <div class="circle"></div>
 
+<canvas id="canvas4"></canvas>
+
+
+
 
 <script>
 
+function playVideo() {
+  const video = document.createElement('video');
+  video.src = '/video/loading.mp4';
+  video.autoplay = true;
+  
+  const canvasvideo = document.getElementById('canvas4');
+  canvasvideo.style.zIndex = 15; // Asignamos un z-index al canvas
+  canvasvideo.style.width = 800;
+  canvasvideo.style.height = 600;
+  canvasvideo.style.objectFit = "cover";
+  
+  document.body.appendChild(video);
+  
+  video.addEventListener('ended', () => {
+    //canvasvideo.style.display = 'none'; // Ocultamos el canvas
+    //document.body.removeChild(video); // Eliminamos el video del DOM
+  });
+  
+}
+
+playVideo()
 
 
 
@@ -216,6 +242,7 @@ function addname(){
 function circularEffect() {
   const circle = document.createElement('div');
   circle.classList.add('circular-effect');
+  circle.style.zIndex = "9999999"; // Establece un z-index de 9999
   document.body.appendChild(circle);
 }
 
@@ -287,7 +314,7 @@ var pelea;
     map.fillText('1.- J U E G O    N U E V O', 180, 500);
     map.fillText('2 -  S A L I R', 180, 550);
   }); 
-  circularEffect()
+  //circularEffect()
 
   //DIFINCION DE ELEMENTOS DINAMICOS
   var myImage = new Image();
@@ -1242,6 +1269,7 @@ window.addEventListener("keydown", (event) => {
               if(startofplaceX === 650 && startofplaceX > 70 && startofplaceY < 270){
                   
                   showDialog(["Un pokemon te ha encontrado!, tienes que luchar para defenderte"])
+                  circularEffect()
                   
                   
               }

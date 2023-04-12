@@ -14,6 +14,15 @@
 
   }
 
+  video {
+    position: relative;
+    width: 800;
+    height: 600;
+    bottom: 623px;
+    left: 294px;
+    z-index: 17;
+  }
+
   #background {
     background-color: blue;
     width: 800px; 
@@ -278,3 +287,6 @@
   transform: scale(1);
   opacity: 1;
 }
+
+/* CANVAS PARA PODER CARGAR EL VIDEO CORRECTAMENTE /*
+
