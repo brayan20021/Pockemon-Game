@@ -16,6 +16,7 @@
 <audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
 <audio id="pokemon-battle" src="audio/pokemonbattle.mp3"></audio>
 <audio id="selectpokemon" src="audio/selectpokemon.mp3"></audio>
+<audio id="wait" src="audio/wait.mp3"></audio>
 
 
 <div class="pokemon-style" id="addname">
@@ -74,6 +75,7 @@
 <div id="background">
   <canvas id="canvas1"></canvas>
   <canvas id="canvas2"></canvas>
+  <canvas id="canvasnps"></canvas>
 </div>
 
 <div id="background2">
@@ -91,12 +93,13 @@
 
 
 
-
 <script>
 
-function playVideo() {
+
+
+function playVideo(link, audio = null) {
   const video = document.createElement('video');
-  video.src = '/video/loading.mp4';
+  video.src = link;
   video.autoplay = true;
   
   const canvasvideo = document.getElementById('canvas4');
@@ -108,18 +111,17 @@ function playVideo() {
   document.body.appendChild(video);
   
   video.addEventListener('ended', () => {
-    //canvasvideo.style.display = 'none'; // Ocultamos el canvas
-    //document.body.removeChild(video); // Eliminamos el video del DOM
+    //audio.play() // solo para intro o audio opcional
+    canvasvideo.style.display = 'none'; // Ocultamos el canvas
+    document.body.removeChild(video); // Eliminamos el video del DOM
   });
   
 }
 
-playVideo()
+//playVideo("/video/intropokemon.mp4")
 
 
 
-  // const miAudio = document.getElementById("mi-audio");
-  //miAudio.play();
 
 var barraVidaenemy = document.getElementById("enemy-life-bar");
 var barraVidaplayer = document.getElementById("player-life-bar");
@@ -239,6 +241,38 @@ function addname(){
   }
 }
 
+function fightDialog(messages, video, fight = null) {
+  if (is_talking === false) {
+    const dialogBox = document.getElementById("dialog-box");
+    const dialogText = document.getElementById("dialog-text");
+    const dialogButton = document.getElementById("dialog-button");
+    is_talking = true;
+
+    dialogText.innerHTML = "";
+    dialogBox.style.display = "block";
+    let i = 0;
+
+    const typing = setInterval(function() {
+      if (i < messages[0].length) {
+        dialogText.innerHTML += messages[0].charAt(i);
+        i++;
+      } else {
+
+        clearInterval(typing);
+
+      }
+
+    }, 50);
+
+      dialogButton.onclick = function() {
+        video("/video/loading.mp4");
+        dialogBox.style.display = "none";
+        fightadded = true;
+        fight()
+    }
+  }
+}
+
 function circularEffect() {
   const circle = document.createElement('div');
   circle.classList.add('circular-effect');
@@ -249,7 +283,7 @@ function circularEffect() {
 //Audios del juego
 
 var intro = document.getElementById("intro")
-intro.play() 
+
 
 var walking = document.getElementById('walking');
 var natural = document.getElementById('natural');
@@ -257,9 +291,12 @@ var springtown_audio = document.getElementById('springtown');
 var naturalnight = document.getElementById('naturalnight');
 var pokemon_battle = document.getElementById("pokemon-battle");
 var selectpokemon_audio = document.getElementById("selectpokemon");
+var motivation = document.getElementById("wait");
 
 //INTERACCION CON EL PERSONAJE
 var globalvar = 1;
+var playerBadges = 0; //Esta es la insignia del jugador que definira el progreso del jugador
+var fightadded = false;
 var startofplaceX;
 var startofplaceY;
 var direccion = 1;
@@ -282,6 +319,9 @@ var pelea;
   var canvas3 = document.getElementById("canvas3");
   var framecanvas = canvas3.getContext("2d");
 
+  var canvas4 = document.getElementById("canvasnps");
+  var canvasnps = canvas4.getContext("2d");
+
   canvas1.setAttribute("style", "z-index: 2; position:absolute;");
   canvas1.width = 800;
   canvas1.height = 600;
@@ -289,6 +329,10 @@ var pelea;
   canvas2.setAttribute("style", "z-index: 10; position:relative;");
   canvas2.width = 800;
   canvas2.height = 600;
+
+  canvas4.setAttribute("style", "z-index: 3; position:relative;");
+  canvas4.width = 800;
+  canvas4.height = 600;
 
   canvas3.setAttribute("style", "z-index: 1; position:relative;");
   canvas3.width = 1230;
@@ -313,6 +357,7 @@ var pelea;
     map.font = '30px pokemon';
     map.fillText('1.- J U E G O    N U E V O', 180, 500);
     map.fillText('2 -  S A L I R', 180, 550);
+    
   }); 
   //circularEffect()
 
@@ -338,9 +383,9 @@ if(playername){
       if (x >= 55 && x <= 489 && y >= 470 && y <= 504) {
         map.clearRect(0, 0, canvas1.width, canvas1.height)
 
-        springTown.draw();
+       
         intro.pause();
-        springtown_audio.play()
+        house1_Views()
 
 
         mover(650, 280, 1);
@@ -458,17 +503,25 @@ location,
 speed: 5,
 npsrouteImage,
             draw () {
+              
                 var npsmyImage = new Image();
                 npsmyImage.src = npsrouteImage;  
                 npsmyImage.onload = function () {
                               //this.x = startofplaceX;
                               //this.y = startofplaceY;
                 
+                canvasnps.clearRect(0, 0, canvas2.width, canvas2.height);
+
+                canvasnps.drawImage(npsmyImage, x, y, 50, 50);                
+                canvasnps.font = 'bold arial 20px';
+                canvasnps.shadowOffsetX = 3;
+                canvasnps.shadowOffsetY = 3;
+                canvasnps.shadowBlur = 4;
+                canvasnps.shadowColor = "rgba(1, 1, 3, 0.8)"; 
+                canvasnps.fillStyle = "white"
+                canvasnps.fillText(this.name, 120 , 270);
                 
 
-                map.drawImage(npsmyImage, x, y, 50, 50);                
-                map.font = 'bold 20px';
-                map.fillText(this.name, 160 , 320);
             } 
           }
 })
@@ -831,8 +884,8 @@ function springTown_views(inicio = true){
       globalvar = 1;
       if(inicio === true){
 
-        startofplaceX = 650;
-        startofplaceY = 280;
+        startofplaceX = 440;
+        startofplaceY = 480;
 
       } else {
 
@@ -846,7 +899,9 @@ function springTown_views(inicio = true){
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
+      canvasnps.clearRect(0, 0, canvas4.width, canvas4.height);
       springTown.draw();
+      selectpokemon_audio.pause()
       freame("Pueblo Paleta", "img/freame/1.png");
       natural.pause();
       pokemon_battle.pause();
@@ -915,8 +970,10 @@ function selectPokemon_views(){
 
 globalvar = 99;
 map.clearRect(0, 0, canvas1.width, canvas1.height);
+canvasnps.clearRect(0, 0, canvas4.width, canvas4.height);
 players.clearRect(0, 0, canvas2.width, canvas2.height);
 springtown_audio.pause()
+motivation.pause()
 selectpokemon_audio.play()
 selectPokemon.draw()
 
@@ -1205,14 +1262,19 @@ window.addEventListener("keydown", (event) => {
     if (globalvar === 1){
 
               if (startofplaceX === 0){
-
-                //changeworld = confirm("¿Estas seguro que quieres comenzar la aventura?")
-                    //if(changeworld){
+                    
+                if(playerBadges === 2){
                       
                       palletTown_views()
-                      //map.reset();
-                    // players.reset();
-                   // }
+
+                  } else {
+
+                    showDialog(["Hey, espera! ¿A dónde crees que vas? Es peligroso aventurarte en ese mundo sin un Pokémon que te proteja.","Ven al laboratorio muchacho te enseñare algo"])
+                    motivation.play()
+                    springtown_audio.pause()
+                    teachernps(280, 240)
+
+                  }
               }
 
               if (startofplaceX > 430 && startofplaceX < 470 && startofplaceY > 420 && startofplaceY < 450){
@@ -1268,9 +1330,21 @@ window.addEventListener("keydown", (event) => {
               
               if(startofplaceX === 650 && startofplaceX > 70 && startofplaceY < 270){
                   
-                  showDialog(["Un pokemon te ha encontrado!, tienes que luchar para defenderte"])
-                  circularEffect()
+              fightDialog(["Un pokemon te ha encontrado!, tienes que luchar para defenderte"], playVideo, run1)
                   
+              //ESTA FUNCION POR EL MOMENTO, NOS EJECUTARA UNA PELEA UNA VEZ SE REPRODUCE LA IMAGEN CARGANDO
+              //ESTO ES PARA QUE LA PELEA SE EJECUTE DESPUES DE 5 SEG Y NO CON EL VIDEO, FUNCION TEMPORAL PARA 
+              //DAR SOLUCION AL MISMO, POR LO QUE NO ES FIJA, DE TENER MEJOR SOLUCION APLICARLA.
+                 function run1(){
+
+                    setTimeout(() => {
+                      
+                      arenafight(arena_forest,pokemonG_player[1],optimus_pk)
+                      freame("Arena Spring", "img/freame/freamepoke.png", true,pokemonG_player[1],optimus)
+
+                      }, 5000);
+                    
+                    }
                   
               }
         }
@@ -1293,10 +1367,14 @@ window.addEventListener("keydown", (event) => {
                   //conversaciones
                   if(startofplaceY > 290 && startofplaceY < 350 && startofplaceX < 240){
 
-
+                    if(playerBadges === 0){
 
                       showDialog(conversacionMadre.parrafo1)
+                      playerBadges = 1
 
+                      } else {
+                        showDialog(["Hola hijo, no olvides la comida, luego me cuentas como te fues."])
+                      }
 
                   }
 
@@ -1355,6 +1433,7 @@ window.addEventListener("keydown", (event) => {
                           
                         }
                         houseTeacher_views()
+                        playerBadges = 2;
                         primerPokemon = true;
                     }
                 });
@@ -1369,7 +1448,7 @@ window.addEventListener("keydown", (event) => {
   
 }
 </script>
-<link rel="stylesheet" type="text/css" href="style.css">
-<script src="messages.js"></script>
-<script src="test.js"></script>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+<script src="js/messages.js"></script>
+<script src="js/test.js"></script>
 </html>
