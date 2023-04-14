@@ -76,6 +76,7 @@
   <canvas id="canvas1"></canvas>
   <canvas id="canvas2"></canvas>
   <canvas id="canvasnps"></canvas>
+  <canvas id="canvas4"></canvas>
 </div>
 
 <div id="background2">
@@ -89,7 +90,7 @@
 
 <div class="circle"></div>
 
-<canvas id="canvas4"></canvas>
+
 
 
 
@@ -112,6 +113,9 @@ function playVideo(link, audio = null) {
   
   video.addEventListener('ended', () => {
     //audio.play() // solo para intro o audio opcional
+    if(entradaJugador === 0){
+    intro.play()
+    }
     canvasvideo.style.display = 'none'; // Ocultamos el canvas
     document.body.removeChild(video); // Eliminamos el video del DOM
   });
@@ -273,12 +277,6 @@ function fightDialog(messages, video, fight = null) {
   }
 }
 
-function circularEffect() {
-  const circle = document.createElement('div');
-  circle.classList.add('circular-effect');
-  circle.style.zIndex = "9999999"; // Establece un z-index de 9999
-  document.body.appendChild(circle);
-}
 
 //Audios del juego
 
@@ -305,7 +303,7 @@ var playername = "";
 var pokemonG_player = Array(2) //Ahi es donde se va a almasenar el pokemon actual del jugador
 var entradaJugador = 0; //VARIABLE QUE OBLIGA AL JUGADOR HACER UNA COSA A LA VEZ EN LA INTRO
 var conversacionMostrada = false; //NO UTILIZADA TODAVIA
-var is_talking = false; //Para que cuando el personaje converse no se mueva
+var is_talking = false; //Para que cuando el nps converse no se mueva el jugador
 var primerPokemon = false; //Variable te permite seleccionar tu primer pokemon una sola vez, corrige error.
 var pelea;
 
@@ -359,7 +357,7 @@ var pelea;
     map.fillText('2 -  S A L I R', 180, 550);
     
   }); 
-  //circularEffect()
+
 
   //DIFINCION DE ELEMENTOS DINAMICOS
   var myImage = new Image();
@@ -910,12 +908,14 @@ function springTown_views(inicio = true){
       
 }
 
-function palletTown_views(){
+function palletTown_views(x,y){
 
       players.clearRect(0, 0, canvas1.width, canvas1.height);
       globalvar = 2;
-      startofplaceX = 750;
-      startofplaceY = 170;
+/*       startofplaceX = 750;
+      startofplaceY = 170; */
+      startofplaceX = x;
+      startofplaceY = y;
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
@@ -943,6 +943,10 @@ function shadowVille_views(){
       mover(startofplaceX, startofplaceY, globalvar);
       
 }
+moving = true
+u = 160;
+p = 320;
+
 
 function house1_Views(){
 
@@ -950,7 +954,25 @@ function house1_Views(){
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       my_house.draw()
-      mothernps(160,320,11)
+      
+/*       setInterval(() => {
+
+        mothernps(u,p,11)
+        if(moving){
+          u++
+          console.log(u,p)
+            p--
+                if(u === 190){moving = false}
+
+          } else {
+              u--
+                p++
+                    if(u <= 160){moving = true}
+                }
+                
+
+      }, 100);
+ */
       mover(startofplaceX, startofplaceY, globalvar);
 
 }
@@ -1193,6 +1215,7 @@ current_enemy  = charmander; //Aqui se volvera dinamico para cambiar
 if(is_talking === false){
 
 window.addEventListener("keydown", (event) => {
+  event.preventDefault();
     //CAPTURA DE COORDENADAS
     if(playername){
       switch(event.key){
@@ -1265,7 +1288,7 @@ window.addEventListener("keydown", (event) => {
                     
                 if(playerBadges === 2){
                       
-                      palletTown_views()
+                      palletTown_views(750,170)
 
                   } else {
 
@@ -1282,17 +1305,16 @@ window.addEventListener("keydown", (event) => {
                   changeworld = confirm("¿Deseas entrar a casa?")
                     if(changeworld){
                       house1_Views()
+                      playVideo("/video/loadingmap.mp4")
 
                     }
               }
 
               if (startofplaceX > 250 && startofplaceX < 300 && startofplaceY > 140 && startofplaceY < 190){
                   
-                  changeworld = confirm("Presione aceptar para entrar al laboratorio del profesor OAK")
-                    if(changeworld){
                       houseTeacher_views()
-
-                    }
+                      playVideo("/video/loadingmap.mp4")
+                    
               }
 
               if(startofplaceX === 760){
@@ -1314,6 +1336,7 @@ window.addEventListener("keydown", (event) => {
                       if(changeworld){
 
                         springTown_views(false)
+                        playVideo("/video/loadingmap.mp4")
 
                       }
               }
@@ -1324,6 +1347,7 @@ window.addEventListener("keydown", (event) => {
                     if(changeworld){
 
                        shadowVille_views();
+                       playVideo("/video/loadingmap.mp4")
 
                       }
               }
@@ -1356,7 +1380,8 @@ window.addEventListener("keydown", (event) => {
                   changeworld = confirm("¿Deseas regresar a aldea paleta?")
                     if(changeworld){
                           
-                      palletTown_views()
+                      palletTown_views(0,150)
+                      playVideo("/video/loadingmap.mp4")
 
                     }
               }
@@ -1380,12 +1405,9 @@ window.addEventListener("keydown", (event) => {
 
               if (startofplaceX > 330 && startofplaceX < 410 && startofplaceY > 540){
 
-                changeworld = confirm("¿Estas seguro que deseas salir de casa?")
-                  if(changeworld){
-
+                    playVideo("/video/loadingmap.mp4")
                     springTown_views()
                     
-                    }
               }
         }
 
@@ -1393,12 +1415,9 @@ window.addEventListener("keydown", (event) => {
 
               if (startofplaceY > 520 && startofplaceY < 550 && startofplaceX > 190 && startofplaceX < 240){
   
-                  changeworld = confirm("¿Desea salir del laboratorio?")
-                    if(changeworld){
-
                       springTown_views()
-
-                    }
+                      playVideo("/video/loadingmap.mp4")
+                    
               }
               
             if(startofplaceX > 0 && startofplaceX < 170 && startofplaceY < 180 && startofplaceY > 90){
