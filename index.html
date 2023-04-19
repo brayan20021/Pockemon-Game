@@ -125,9 +125,7 @@ function playVideo(link, audio = null) {
   
 }
 
-playVideo("/video/intropokemon.mp4")
-
-
+//playVideo("/video/intropokemon.mp4")
 
 
 var barraVidaenemy = document.getElementById("enemy-life-bar");
@@ -296,6 +294,7 @@ var motivation = document.getElementById("wait");
 
 //INTERACCION CON EL PERSONAJE
 var globalvar = 1;
+var global_map = "img/starfall.png"
 var playerBadges = 0; //Esta es la insignia del jugador que definira el progreso del jugador
 var fightadded = false;
 var startofplaceX;
@@ -352,8 +351,8 @@ var pelea;
     font.load().then(function (loadedFont) {
     document.fonts.add(loadedFont);
     
-    startofplaceX = 650;
-    startofplaceY = 280;
+    startofplaceX = -680;
+    startofplaceY = -505;
 
     map.font = '30px pokemon';
     map.fillText('1.- J U E G O    N U E V O', 180, 500);
@@ -368,9 +367,9 @@ var pelea;
   myImage.onload = function () {
                 //this.x = startofplaceX;
                 //this.y = startofplaceY;
-                players.drawImage(myImage, startofplaceX, startofplaceY, 50, 50);                
-                players.font = 'bold 20px arial';
-                players.fillText(this.name, this.x , this.y);
+                //players.drawImage(myImage, startofplaceX, startofplaceY, 50, 50);                
+                //players.font = 'bold 20px arial';
+                //players.fillText(this.name, this.x , this.y);
             }
 
 //INTERACCION CON MENU
@@ -386,9 +385,9 @@ if(playername){
 
        
         intro.pause();
-        house1_Views();
-
-        mover(650, 280, 1);
+        //house1_Views();
+        springTown_views()
+        //mover(650, 280, 1);
         entradaJugador = 1;
       }
     }
@@ -407,13 +406,17 @@ routeImage,
 
           draw () {
 
+            //map.clearRect(0, 0, canvas1.width, canvas1.height);
+            //players.clearRect(0, 0, canvas2.width, canvas2.height);
+
                 var myImage = new Image();
                 myImage.src = routeImage;   
                 myImage.onload = function () {
 
-                    map.drawImage(myImage, width, height, 800, 600);
+                    map.drawImage(myImage, x, y, 2000, 1800);
 
                 } 
+                console.log(x,y)
 
               }
  
@@ -435,8 +438,8 @@ routeImage,
            // myImage.onload = function () {
                 //this.x = startofplaceX;
                 //this.y = startofplaceY;
-                var pasosX = ((x / 2) % 2);
-                var pasosY = ((y / 2) % 2);
+                var pasosX = ((startofplaceX / 2) % 2);
+                var pasosY = ((startofplaceY / 2) % 2);
                 
                 switch(direccion){
 
@@ -711,17 +714,29 @@ var firstplayer;
 
 function mover(x, y, w) {
 
-firstplayer = player({
+
+ciudad = city({
+
+name            : 'SpringTown',
+x               : x,
+y               : y,
+routeImage      : global_map
+
+}); 
+
+ firstplayer = player({
 
   name            :    "Carlos",
-  x               :     x,
-  y               :     y,
+  x               :     350,
+  y               :     290,
   routeImage      :    "img/player.png",
   speed           :    5,
   location        :    w
 
-});
+}); 
+
 firstplayer.draw();
+ciudad.draw()
 
 }
 
@@ -884,8 +899,8 @@ function springTown_views(inicio = true){
       globalvar = 1;
       if(inicio === true){
 
-        startofplaceX = 440;
-        startofplaceY = 480;
+        startofplaceX = -570;
+        startofplaceY = -510;
 
       } else {
 
@@ -907,6 +922,7 @@ function springTown_views(inicio = true){
       pokemon_battle.pause();
       springtown_audio.play();
       mover(startofplaceX, startofplaceY, globalvar);
+      global_map = "img/starfall.png"
       
 }
 
@@ -926,6 +942,7 @@ function palletTown_views(x,y){
       springtown_audio.pause();
       naturalnight.pause();
       natural.play();
+      global_map = "img/pallettown.png"
       mover(startofplaceX, startofplaceY, globalvar);
 
 }
@@ -955,7 +972,7 @@ function house1_Views(){
       globalvar = 10;
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
-      my_house.draw()
+      //my_house.draw()
       
 /*       setInterval(() => {
 
@@ -975,7 +992,7 @@ function house1_Views(){
 
       }, 100);
  */
-      mover(startofplaceX, startofplaceY, globalvar);
+      mover(-670, -505, globalvar);
 
 }
 
@@ -985,6 +1002,7 @@ function houseTeacher_views(){
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       houseTeacher.draw();
+      global_map = "img/house/house_teacher2.png";
       mover(startofplaceX, startofplaceY, globalvar);
       teachernpc(240,100)
 
@@ -1223,37 +1241,36 @@ window.addEventListener("keydown", (event) => {
       switch(event.key){
       case 'ArrowUp':
           direccion = 2;
-              if(startofplaceY > 0){
+
                 if(upflag === 1){ //PARA COLICION, SI SE DETECTA NO SE MUEVE
-                  startofplaceY -= 10; // Mover hacia arriba
+                  startofplaceY += 5; // Mover hacia arriba
                   
                   walking.play()
                     }
-                  }
+                  
 
               break;
 
         case 'ArrowDown':
             direccion = 4;
-                if(startofplaceY < 550){
+   
                   if(downflag === 1){ //PARA COLICION, SI SE DETECTA NO SE MUEVE
-                  startofplaceY += 10; // Mover hacia abajo
+                  startofplaceY -= 10; // Mover hacia abajo
                   upflag = 1
                   walking.play()
                   }
-                } 
+              
 
               break;
 
         case 'ArrowLeft':
             direccion = 1;
 
-                if(startofplaceX > 0){
                   if(leftflag === 1){ ///PARA COLICION, SI SE DETECTA NO SE MUEVE
-                  startofplaceX -= 10; // Mover hacia la izquierda
+                  startofplaceX += 10; // Mover hacia la izquierda
                   walking.play()
                     }
-                  }
+                  
 
           break;
 
@@ -1261,13 +1278,12 @@ window.addEventListener("keydown", (event) => {
         case 'ArrowRight':
             direccion = 3;
 
-                if(startofplaceX < 760){
                   if(rightflag === 1){ //PARA COLICION, SI SE DETECTA NO SE MUEVE
-                  startofplaceX += 10; // Mover hacia la derecha
+                  startofplaceX -= 10; // Mover hacia la derecha
                   leftflag = 1
                   walking.play()
                   }
-                }
+                
           break;
 
         default:
@@ -1293,7 +1309,7 @@ window.addEventListener("keydown", (event) => {
 
     if (globalvar === 1){
 
-              if (startofplaceX === 0){
+              if (startofplaceX > 130 && startofplaceY < -115 && startofplaceY > -265){
                     
                 if(playerBadges === 2){
                       
@@ -1319,9 +1335,9 @@ window.addEventListener("keydown", (event) => {
                     }
               }
 
-              if (startofplaceX > 250 && startofplaceX < 300 && startofplaceY > 140 && startofplaceY < 190){
+              if (startofplaceX < -1000 && startofplaceX > -1100 && startofplaceY > -470){
                   
-                      houseTeacher_views()
+                      houseTeacher_views() //CASA DEL PROFESOR OAK
                       playVideo("/video/loadingmap.mp4")
                     
               }
