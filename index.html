@@ -13,7 +13,7 @@
 <audio id="walking" src="audio/walking.mp3"></audio>
 <audio id="natural" src="audio/natural.mp3"></audio>
 <audio id="springtown" src="audio/springtown.mp3"></audio>
-<audio id="naturalnight" src="audio/naturalnight.mp3"></audio>
+<audio id="naturalnight" src="audio/cityambiente.mp3"></audio>
 <audio id="pokemon-battle" src="audio/pokemonbattle.mp3"></audio>
 <audio id="selectpokemon" src="audio/selectpokemon.mp3"></audio>
 <audio id="wait" src="audio/wait.mp3"></audio>
@@ -75,7 +75,6 @@
 <div id="background">
   <canvas id="canvas1"></canvas>
   <canvas id="canvas2"></canvas>
-  <canvas id="canvasnpc"></canvas>
   <canvas id="canvas4"></canvas>
 </div>
 
@@ -87,6 +86,11 @@
   <p id="dialog-text"></p>
   <button id="dialog-button">Continuar</button>
 </div>
+
+<div id="canvasnpc2">
+  <canvas id="canvasnpc"></canvas>
+</div>
+
 
 <div class="circle"></div>
 
@@ -386,7 +390,8 @@ if(playername){
        
         intro.pause();
         //house1_Views();
-        springTown_views()
+        //springTown_views()
+        house1_Views(-900,-535)
         //mover(650, 280, 1);
         entradaJugador = 1;
       }
@@ -409,13 +414,34 @@ routeImage,
             //map.clearRect(0, 0, canvas1.width, canvas1.height);
             //players.clearRect(0, 0, canvas2.width, canvas2.height);
 
-                var myImage = new Image();
-                myImage.src = routeImage;   
+              var myImage = new Image();
+              myImage.src = routeImage;
+              if(globalvar === 99){   
+                    myImage.onload = function () {
+                        
+                      map.clearRect(0, 0, canvas1.width, canvas1.height);
+                      canvasnpc.clearRect(0, 0, canvas4.width, canvas4.height);
+                      players.clearRect(0, 0, canvas2.width, canvas2.height);
+                      
+                        map.drawImage(myImage, 0, 0, 800, 600);
+                    }  
+                } else if(combate === true){
+                    myImage.onload = function () {
+                          
+                          map.clearRect(0, 0, canvas1.width, canvas1.height);
+                          canvasnpc.clearRect(0, 0, canvas4.width, canvas4.height);
+                          players.clearRect(0, 0, canvas2.width, canvas2.height);
+                          
+                            map.drawImage(myImage, 0, 0, 800, 600);
+                        }  
+
+                } else {
                 myImage.onload = function () {
 
                     map.drawImage(myImage, x, y, 2000, 1800);
 
                 } 
+              }
                 console.log(x,y)
 
               }
@@ -899,8 +925,8 @@ function springTown_views(inicio = true){
       globalvar = 1;
       if(inicio === true){
 
-        startofplaceX = -570;
-        startofplaceY = -510;
+        startofplaceX = -275;
+        startofplaceY = -400;
 
       } else {
 
@@ -910,6 +936,7 @@ function springTown_views(inicio = true){
       }
       barraVidaenemy.style.display = "none";
       barraVidaplayer.style.display = "none";
+      combate = false
 
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
@@ -934,10 +961,11 @@ function palletTown_views(x,y){
       startofplaceY = 170; */
       startofplaceX = x;
       startofplaceY = y;
+      
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
       framecanvas.clearRect(0, 0, canvas3.width, canvas3.height);
-      pallettown.draw();
+      //pallettown.draw();
       freame("Aldea Paleta", "img/freame/2.png");
       springtown_audio.pause();
       naturalnight.pause();
@@ -947,18 +975,18 @@ function palletTown_views(x,y){
 
 }
 
-function shadowVille_views(){
+function shadowVille_views(x,y){
 
       players.clearRect(0, 0, canvas1.width, canvas1.height);
       globalvar = 3;
-      startofplaceX = 740;
-      startofplaceY = 310;
+      startofplaceX = x;
+      startofplaceY = y;
       map.clearRect(0, 0, canvas1.width, canvas1.height);
       players.clearRect(0, 0, canvas2.width, canvas2.height);
-      shadowVille.draw();
       natural.pause();
       springtown_audio.pause();
       naturalnight.play();
+      global_map = "img/progresscity.png"
       mover(startofplaceX, startofplaceY, globalvar);
       
 }
@@ -967,7 +995,7 @@ u = 160;
 p = 320;
 
 
-function house1_Views(){
+function house1_Views(x,y){
 
       globalvar = 10;
       map.clearRect(0, 0, canvas1.width, canvas1.height);
@@ -991,8 +1019,11 @@ function house1_Views(){
                 
 
       }, 100);
- */
-      mover(-670, -505, globalvar);
+  */
+
+      global_map = "img/house/myhouse.png"
+      mover(x, y, globalvar);
+
 
 }
 
@@ -1004,7 +1035,7 @@ function houseTeacher_views(){
       houseTeacher.draw();
       global_map = "img/house/house_teacher2.png";
       mover(startofplaceX, startofplaceY, globalvar);
-      teachernpc(240,100)
+      teachernpc(-455,-105)
 
 }
 
@@ -1017,7 +1048,10 @@ players.clearRect(0, 0, canvas2.width, canvas2.height);
 springtown_audio.pause()
 motivation.pause()
 selectpokemon_audio.play()
-selectPokemon.draw()
+//selectPokemon.draw()
+
+mover(0,0,99)
+global_map = "img/startpokemon.png"
 
 }
 
@@ -1139,10 +1173,11 @@ class pokemon {
         barra_Salud(this.hp,rival.hp)
 
          if(rival.hp <= 0){
-          alert("Felicidades!, Haz ganado la pelea.")
           rival.hp = 50
           correrMenu()  
-          springTown_views(false)
+          //springTown_views(false)
+          palletTown_views(-1135,-275)
+          showDialog(systemNotification.parrafo1[3])
         } 
 
       }
@@ -1255,7 +1290,7 @@ window.addEventListener("keydown", (event) => {
             direccion = 4;
    
                   if(downflag === 1){ //PARA COLICION, SI SE DETECTA NO SE MUEVE
-                  startofplaceY -= 10; // Mover hacia abajo
+                  startofplaceY -= 5; // Mover hacia abajo
                   upflag = 1
                   walking.play()
                   }
@@ -1267,7 +1302,7 @@ window.addEventListener("keydown", (event) => {
             direccion = 1;
 
                   if(leftflag === 1){ ///PARA COLICION, SI SE DETECTA NO SE MUEVE
-                  startofplaceX += 10; // Mover hacia la izquierda
+                  startofplaceX += 5; // Mover hacia la izquierda
                   walking.play()
                     }
                   
@@ -1279,7 +1314,7 @@ window.addEventListener("keydown", (event) => {
             direccion = 3;
 
                   if(rightflag === 1){ //PARA COLICION, SI SE DETECTA NO SE MUEVE
-                  startofplaceX -= 10; // Mover hacia la derecha
+                  startofplaceX -= 5; // Mover hacia la derecha
                   leftflag = 1
                   walking.play()
                   }
@@ -1313,7 +1348,8 @@ window.addEventListener("keydown", (event) => {
                     
                 if(playerBadges === 2){
                       
-                      palletTown_views(750,170)
+                      playVideo("/video/loadingmap.mp4")
+                      palletTown_views(-1500,-275)
 
                   } else {
 
@@ -1325,15 +1361,13 @@ window.addEventListener("keydown", (event) => {
                   }
               }
 
-              if (startofplaceX > 430 && startofplaceX < 470 && startofplaceY > 420 && startofplaceY < 450){
+/*               if (startofplaceX < -195 && startofplaceX > -330 && startofplaceY > -370){
 
-                  changeworld = confirm("¿Deseas entrar a casa?")
-                    if(changeworld){
                       house1_Views()
                       playVideo("/video/loadingmap.mp4")
 
-                    }
-              }
+                    
+              } */
 
               if (startofplaceX < -1000 && startofplaceX > -1100 && startofplaceY > -470){
                   
@@ -1366,18 +1400,18 @@ window.addEventListener("keydown", (event) => {
                       }
               }
 
-              if(startofplaceX === 0 && startofplaceY > 90 && startofplaceX < 150){
+              if(startofplaceX === 290 && startofplaceY < -100 && startofplaceX > -255){
 
                   changeworld = confirm("Deseas ir a Villa sombra")
                     if(changeworld){
 
-                       shadowVille_views();
+                       shadowVille_views(-470,-1490);
                        playVideo("/video/loadingmap.mp4")
 
                       }
               }
               
-              if(startofplaceX === 650 && startofplaceX > 70 && startofplaceY < 270){
+              if(startofplaceX > -1255 && startofplaceY < -155 && startofplaceY > -460){
                   
               fightDialog(["Un pokemon te ha encontrado!, tienes que luchar para defenderte"], playVideo, run1)
                   
@@ -1410,42 +1444,48 @@ window.addEventListener("keydown", (event) => {
 
                     }
               }
+
+              if(startofplaceY > -1250){
+
+                showDialog(nps_city.parrafo1)
+
+              }
       }
 
     if (globalvar === 10){
 
                   //conversaciones
-                  if(startofplaceY > 290 && startofplaceY < 350 && startofplaceX < 240){
+                  if(startofplaceY > -475){
 
                     if(playerBadges === 0){
 
-                      showDialog(conversacionMadre.parrafo1)
+                      showDialog(conversacionMadre.parrafo1)  
                       playerBadges = 1
 
                       } else {
-                        showDialog(["Hola hijo, no olvides la comida, luego me cuentas como te fues."])
+                        showDialog(["Hola hijo, no olvides la comida, luego me cuentas como te fue."])
                       }
 
                   }
 
-              if (startofplaceX > 330 && startofplaceX < 410 && startofplaceY > 540){
+              if (startofplaceX < -555 && startofplaceX > -710 && startofplaceY < -980){
 
-                    playVideo("/video/loadingmap.mp4")
-                    springTown_views()
+                      playVideo("/video/loadingmap.mp4")
+                      springTown_views()
                     
               }
         }
 
     if (globalvar === 11){
 
-              if (startofplaceY > 520 && startofplaceY < 550 && startofplaceX > 190 && startofplaceX < 240){
+              if (startofplaceX < -380 && startofplaceX > -480 && startofplaceY < -1310 && startofplaceY > -1360){
   
                       springTown_views()
                       playVideo("/video/loadingmap.mp4")
                     
               }
               
-            if(startofplaceX > 0 && startofplaceX < 170 && startofplaceY < 180 && startofplaceY > 90){
+            if(startofplaceX < -90 && startofplaceX > -280 && startofplaceY < -170 && startofplaceY > - 245){
 
               if(primerPokemon === false){
 
@@ -1484,7 +1524,7 @@ window.addEventListener("keydown", (event) => {
               }
           }
 
-          if(startofplaceX > 210 && startofplaceX < 280 && startofplaceY <= 160){
+          if(startofplaceX < -435 && startofplaceX > -460 && startofplaceY < -115){
                 showDialog(oak_conversation.parrafo1)
             }
       }

@@ -28,7 +28,17 @@ parrafo1: [
 "¡Hey espera! Ciudad Paleta necesita saber tu nombre",
 "Un pokemon te ha encontrado!, tienes que luchar para defenderte",
 "Puedes escoger entre Bulbasaur, Charmander y Squirtle. ¿Cuál te gustaría tener como tu primer Pokémon?",
+"Felicidades!, has ganado la pelea, pero tu pokemon necesita asistencia medica"
 
 ]
     
 };
+
+const nps_city = {
+
+    parrafo1: [
+        "Hola, como estas a donde vas",
+        "He escuchado que en esta ciudad, hacen las mejores peleas de pokemon,",
+        "Si deseas participar te recomiendo que vayas a la arena que queda en el norte de la ciudad"
+    ]
+}

@@ -16,7 +16,7 @@
 
   video {
     position: relative;
-    bottom: 621px;
+    bottom: 610px;
     left: 601px;
     z-index: 17;
   }
@@ -35,10 +35,11 @@
 
   }
 
-  #canvasnps {
+  #canvasnpc2 {
+      
+    margin-top: -621.5px;
+    margin-left: 602.5px;
 
-    top: -607px;
-    left: 500px;
     
   }
 
