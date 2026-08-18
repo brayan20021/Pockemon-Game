@@ -1,29 +1,83 @@
-#Juego de Pokémon
+# Pokémon Game
 
-Este es un juego de Pokémon hecho con JavaScript y el elemento canvas de HTML5. En este juego, los jugadores pueden controlar a un personaje y explorar diferentes lugares para encontrar y capturar Pokémon. El objetivo del juego es atrapar la mayor cantidad de Pokémon posible y convertirse en el mejor entrenador Pokémon.
+A browser-based Pokémon-inspired adventure game built with **JavaScript** and the **HTML5 Canvas API**.
 
-#Cómo jugar
+Explore the game world, enter different locations, interact with available options, encounter wild Pokémon, and build your collection as you progress through the adventure. The goal is to explore, capture as many Pokémon as possible, and become a great Pokémon Trainer.
 
-Clona o descarga el repositorio.
-Abre el archivo index.html en tu navegador web.
-Verás un menú principal con las opciones de "Nuevo juego" y "Salir". Haz clic en "Nuevo juego" para comenzar una nueva partida.
-Aparecerás en un campo con cuatro casas en las esquinas. Usa las teclas de flecha en tu teclado para mover al personaje y explorar el campo y las casas.
-Al entrar en una casa, aparecerá una imagen y texto que indicará las opciones disponibles en esa casa, como alimentar a tu Pokémon, descansar, etc. Usa las teclas de flecha para mover el cursor y seleccionar una opción, luego presiona Enter para confirmar.
-En el campo y las casas, es posible encontrar Pokémon salvajes. Para capturarlos, usa una Poké Ball desde el menú de tu personaje. Una vez que hayas capturado varios Pokémon, puedes intercambiarlos o luchar contra otros entrenadores en el centro Pokémon (ubicado en el centro del campo).
-Controles
-Usa las teclas de flecha para mover a tu personaje por el campo y las casas.
-Presiona Enter para seleccionar una opción en las casas y el menú de tu personaje.
-Usa las teclas Q y W para seleccionar diferentes opciones en el menú de tu personaje.
+## 🎮 Gameplay
 
-#Tecnologías utilizadas
-JavaScript
-HTML5
-CSS
+The game begins from a main menu where players can start a new adventure and explore the game world.
 
-#Contribuciones
+Players can:
 
-Este es un proyecto de código abierto y se aceptan contribuciones. Siéntete libre de hacer un fork de este proyecto y enviar pull requests para agregar nuevas funcionalidades o corregir errores.
+* Explore the main field and surrounding houses.
+* Move between different locations.
+* Interact with options available inside each location.
+* Encounter wild Pokémon during exploration.
+* Capture Pokémon using Poké Balls.
+* Manage different options through the in-game menu.
+* Build a Pokémon collection and interact with other trainers.
 
-#Créditos
+The game world includes a central field surrounded by different locations, each offering unique interactions such as resting, managing Pokémon, and other activities.
 
-El arte de los Pokémon es propiedad de Nintendo y Game Freak. El código base para el juego fue creado por Carlos Rodriguez.
+## 🕹️ Controls
+
+| Key        | Action                                |
+| ---------- | ------------------------------------- |
+| Arrow Keys | Move the character and navigate menus |
+| Enter      | Select and confirm an option          |
+| Q / W      | Switch between available menu options |
+
+## 🚀 Getting Started
+
+To run the project locally:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/your-repository.git
+```
+
+2. Open the project folder.
+
+3. Launch the `index.html` file in your preferred web browser.
+
+No additional installation or dependencies are required.
+
+## 🛠️ Technologies
+
+* JavaScript
+* HTML5
+* HTML5 Canvas API
+* CSS
+
+## 🎯 Project Purpose
+
+This project was created to explore game development concepts using vanilla JavaScript and the HTML5 Canvas API.
+
+It focuses on core programming concepts such as:
+
+* Game loops and rendering
+* Character movement
+* Keyboard input handling
+* Interactive menus
+* Game state management
+* Object interaction
+
+## 🤝 Contributing
+
+Contributions are welcome. Feel free to fork the repository, improve the game, fix bugs, or propose new features through a pull request.
+
+## ⚠️ Disclaimer
+
+This is a fan-made educational project and is not affiliated with, endorsed by, or associated with Nintendo, Game Freak, or The Pokémon Company.
+
+Pokémon and related characters, names, and visual assets are trademarks and property of their respective owners.
+
+## 👨‍💻 Author
+
+Developed by **Carlos Andrés Rodríguez**
+
+---
+
+⭐ If you enjoyed this project, feel free to give the repository a star!
